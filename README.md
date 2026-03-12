@@ -123,6 +123,11 @@ For OpenRouter, the runner also supports:
 - `OPENROUTER_HTTP_REFERER` — optional attribution header
 - `OPENROUTER_TITLE` — optional application title header
 
+Judge JSON parsing retries are configurable:
+
+- `JUDGE_JSON_RETRY_MAX_ATTEMPTS` — total parse attempts (default `3`)
+- `JUDGE_JSON_RETRY_BASE_DELAY_SECONDS` — base delay in seconds (default `1`, then `2`, `4`, ...)
+
 The runner writes a timestamped JSON report to `evals/results/`. Each report includes:
 
 - bare-model answers and judged verdicts

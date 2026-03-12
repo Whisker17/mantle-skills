@@ -29,6 +29,8 @@ Environment:
   OPENROUTER_BASE_URL     Optional, defaults to https://openrouter.ai/api/v1
   OPENROUTER_HTTP_REFERER Optional attribution header for OpenRouter
   OPENROUTER_TITLE        Optional title header for OpenRouter
+  JUDGE_JSON_RETRY_MAX_ATTEMPTS Optional, defaults to 3 (set 1 to disable)
+  JUDGE_JSON_RETRY_BASE_DELAY_SECONDS Optional, defaults to 1
 EOF
 }
 
@@ -244,6 +246,52 @@ api_request() {
   esac
 }
 
+request_and_parse_judge_json() {
+  local provider="$1"
+  local endpoint="$2"
+  local payload="$3"
+  local max_attempts="${JUDGE_JSON_RETRY_MAX_ATTEMPTS:-3}"
+  local base_delay="${JUDGE_JSON_RETRY_BASE_DELAY_SECONDS:-1}"
+  local attempt=1
+  local response=""
+  local parsed=""
+  local error_file=""
+  local sleep_seconds=0
+
+  if ! [[ "$max_attempts" =~ ^[0-9]+$ ]] || (( max_attempts < 1 )); then
+    max_attempts=1
+  fi
+  if ! [[ "$base_delay" =~ ^[0-9]+$ ]]; then
+    base_delay=1
+  fi
+
+  while true; do
+    if ! response=$(api_request "$provider" "$endpoint" "$payload"); then
+      return 1
+    fi
+
+    error_file=$(mktemp)
+    if parsed=$(printf '%s' "$response" | extract_output_text | jq -c . 2>"$error_file"); then
+      rm -f "$error_file"
+      printf '%s\n' "$parsed"
+      return 0
+    fi
+
+    if (( attempt >= max_attempts )); then
+      cat "$error_file" >&2
+      rm -f "$error_file"
+      return 1
+    fi
+
+    rm -f "$error_file"
+    sleep_seconds=$(( base_delay * (2 ** (attempt - 1)) ))
+    if (( sleep_seconds > 0 )); then
+      sleep "$sleep_seconds"
+    fi
+    attempt=$((attempt + 1))
+  done
+}
+
 judge_schema_json() {
   jq -nc '
     {
@@ -377,7 +425,7 @@ judge_answer() {
             }
           }'
       )
-      api_request "$provider" "responses" "$payload" | extract_output_text | jq -c .
+      request_and_parse_judge_json "$provider" "responses" "$payload"
       ;;
     openrouter)
       payload=$(
@@ -417,7 +465,7 @@ judge_answer() {
             }
           }'
       )
-      api_request "$provider" "chat/completions" "$payload" | extract_output_text | jq -c .
+      request_and_parse_judge_json "$provider" "chat/completions" "$payload"
       ;;
     *)
       die "unsupported provider '$provider'; currently supported: openai, openrouter"
