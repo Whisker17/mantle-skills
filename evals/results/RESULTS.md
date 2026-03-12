@@ -14,7 +14,7 @@
 - **Evals:** 71 total across 10 skill suites
 - **A/B test:** each prompt run twice (`with skill` vs `bare`)
 - **Result folders:**
-  - [`evals/results/batches/openrouter-all-skills-2026-03-11T16-35-54Z`](./batches/openrouter-all-skills-2026-03-11T16-35-54Z)
+  - [`evals/results/batches/openrouter-all-skills-2026-03-12T04-15-28Z`](./batches/openrouter-all-skills-2026-03-12T04-15-28Z)
   - [`evals/results/batches/openai-all-skills-2026-03-12T02-12-17Z`](./batches/openai-all-skills-2026-03-12T02-12-17Z)
 
 ---
@@ -24,12 +24,12 @@
 
 |                        | OpenRouter Trinity                      | OpenAI GPT-5.2                         |
 | ---------------------- | --------------------------------------- | -------------------------------------- |
-| Skills completed       | 9 / 10                                  | 3 / 10                                 |
-| Evals completed        | 65 / 71                                 | 18 / 71                                |
-| **With skill**         | **96.9%** (63 pass, 1 partial, 1 fail)  | **88.9%** (16 pass, 1 partial, 1 fail) |
-| **Without skill**      | **21.5%** (14 pass, 7 partial, 44 fail) | **5.6%** (1 pass, 3 partial, 14 fail)  |
-| **Uplift (pass rate)** | **+75.4 pts**                           | **+83.3 pts**                          |
-| Comparison counts      | 50 skill_better, 15 same, 0 bare_better | 15 skill_better, 3 same, 0 bare_better |
+| Skills completed       | 10 / 10                                 | 3 / 10                                 |
+| Evals completed        | 71 / 71                                 | 18 / 71                                |
+| **With skill**         | **97.2%** (69 pass, 0 partial, 2 fail)  | **88.9%** (16 pass, 1 partial, 1 fail) |
+| **Without skill**      | **29.6%** (21 pass, 5 partial, 45 fail) | **5.6%** (1 pass, 3 partial, 14 fail)  |
+| **Uplift (pass rate)** | **+67.6 pts**                           | **+83.3 pts**                          |
+| Comparison counts      | 48 skill_better, 23 same, 0 bare_better | 15 skill_better, 3 same, 0 bare_better |
 
 
 ---
@@ -41,16 +41,16 @@ Legend: `✅ pass`, `⚠️ partial`, `❌ fail`, `— not completed`
 
 | Skill                    | Evals | JSON | OpenRouter w/    | OpenRouter w/o   | OpenAI w/        | OpenAI w/o       |
 | ------------------------ | ----- | ---- | ---------------- | ---------------- | ---------------- | ---------------- |
-| address-registry         | 8     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/address-registry.json) | ✅ 8 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 0 / ❌ 7 | —                | —                |
-| data-indexer             | 6     | [OpenAI](./batches/openai-all-skills-2026-03-12T02-12-17Z/data-indexer.json) | —                | —                | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 1 / ❌ 4 |
-| defi-operator            | 10    | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/defi-operator.json) | ✅ 9 / ⚠️ 1 / ❌ 0 | ✅ 3 / ⚠️ 0 / ❌ 7 | —                | —                |
-| network-primer           | 9     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/network-primer.json) | ✅ 9 / ⚠️ 0 / ❌ 0 | ✅ 2 / ⚠️ 0 / ❌ 7 | —                | —                |
-| portfolio-analyst        | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/portfolio-analyst.json), [OpenAI](./batches/openai-all-skills-2026-03-12T02-12-17Z/portfolio-analyst.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 0 / ⚠️ 0 / ❌ 6 | ✅ 5 / ⚠️ 0 / ❌ 1 | ✅ 0 / ⚠️ 0 / ❌ 6 |
-| readonly-debugger        | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/readonly-debugger.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 3 / ⚠️ 2 / ❌ 1 | —                | —                |
-| risk-evaluator           | 8     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/risk-evaluator.json) | ✅ 7 / ⚠️ 0 / ❌ 1 | ✅ 1 / ⚠️ 1 / ❌ 6 | —                | —                |
-| smart-contract-deployer  | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/smart-contract-deployer.json), [OpenAI](./batches/openai-all-skills-2026-03-12T02-12-17Z/smart-contract-deployer.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 1 / ❌ 4 | ✅ 5 / ⚠️ 1 / ❌ 0 | ✅ 0 / ⚠️ 2 / ❌ 4 |
-| smart-contract-developer | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/smart-contract-developer.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 2 / ❌ 3 | —                | —                |
-| tx-simulator             | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/tx-simulator.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 2 / ⚠️ 1 / ❌ 3 | —                | —                |
+| address-registry         | 8     | [OpenRouter](./batches/openrouter-all-skills-2026-03-12T04-15-28Z/address-registry.json) | ✅ 8 / ⚠️ 0 / ❌ 0 | ✅ 3 / ⚠️ 0 / ❌ 5 | —                | —                |
+| data-indexer             | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-12T04-15-28Z/data-indexer.json), [OpenAI](./batches/openai-all-skills-2026-03-12T02-12-17Z/data-indexer.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 2 / ⚠️ 0 / ❌ 4 | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 1 / ❌ 4 |
+| defi-operator            | 10    | [OpenRouter](./batches/openrouter-all-skills-2026-03-12T04-15-28Z/defi-operator.json) | ✅ 10 / ⚠️ 0 / ❌ 0 | ✅ 3 / ⚠️ 1 / ❌ 6 | —                | —                |
+| network-primer           | 9     | [OpenRouter](./batches/openrouter-all-skills-2026-03-12T04-15-28Z/network-primer.json) | ✅ 9 / ⚠️ 0 / ❌ 0 | ✅ 3 / ⚠️ 0 / ❌ 6 | —                | —                |
+| portfolio-analyst        | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-12T04-15-28Z/portfolio-analyst.json), [OpenAI](./batches/openai-all-skills-2026-03-12T02-12-17Z/portfolio-analyst.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 0 / ⚠️ 0 / ❌ 6 | ✅ 5 / ⚠️ 0 / ❌ 1 | ✅ 0 / ⚠️ 0 / ❌ 6 |
+| readonly-debugger        | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-12T04-15-28Z/readonly-debugger.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 3 / ⚠️ 1 / ❌ 2 | —                | —                |
+| risk-evaluator           | 8     | [OpenRouter](./batches/openrouter-all-skills-2026-03-12T04-15-28Z/risk-evaluator.json) | ✅ 6 / ⚠️ 0 / ❌ 2 | ✅ 2 / ⚠️ 0 / ❌ 6 | —                | —                |
+| smart-contract-deployer  | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-12T04-15-28Z/smart-contract-deployer.json), [OpenAI](./batches/openai-all-skills-2026-03-12T02-12-17Z/smart-contract-deployer.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 1 / ❌ 4 | ✅ 5 / ⚠️ 1 / ❌ 0 | ✅ 0 / ⚠️ 2 / ❌ 4 |
+| smart-contract-developer | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-12T04-15-28Z/smart-contract-developer.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 2 / ❌ 3 | —                | —                |
+| tx-simulator             | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-12T04-15-28Z/tx-simulator.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 3 / ⚠️ 0 / ❌ 3 | —                | —                |
 
 
 ---
@@ -58,7 +58,7 @@ Legend: `✅ pass`, `⚠️ partial`, `❌ fail`, `— not completed`
 ## Key Findings
 
 1. Skill loading materially improves accuracy for both tested model configurations, with no case where bare outperformed skill-loaded responses in completed suites.
-2. OpenRouter run completed 9 of 10 skill suites and reached high with-skill pass rates across most completed suites.
+2. OpenRouter run completed all 10 skill suites and covered the full 71-eval set.
 3. OpenAI run completed 3 of 10 skill suites; completed suites still show large uplift versus bare baselines.
 4. On completed data, both models are much weaker in bare mode than in skill-loaded mode, which validates the eval suite's intended signal.
 
@@ -66,6 +66,5 @@ Legend: `✅ pass`, `⚠️ partial`, `❌ fail`, `— not completed`
 
 ## Notes
 
-- The OpenRouter batch has one suite marked incomplete (`data-indexer`).
 - The OpenAI batch has seven suites marked incomplete.
 - Completion counts are taken from `summary.json` and per-skill result file presence in each batch directory.
