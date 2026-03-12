@@ -1,0 +1,17 @@
+Running 10 eval(s) for defi-operator with openrouter/arcee-ai/trinity-large-preview:free (judge: openrouter/arcee-ai/trinity-large-preview:free)
+[1/10] defi-swap-default-venue bare=FAIL skill=PASS (skill_better)
+[2/10] defi-lending-default bare=FAIL skill=PASS (skill_better)
+[3/10] defi-execution-readiness bare=PASS skill=PASS (same)
+[4/10] defi-discovery-vs-execution bare=FAIL skill=PASS (skill_better)
+[5/10] defi-defillama-trust bare=PASS skill=PASS (same)
+[6/10] defi-supporting-skills bare=FAIL skill=PASS (skill_better)
+[7/10] defi-stale-metrics bare=PASS skill=PASS (same)
+[8/10] defi-curated-score-delta bare=FAIL skill=PASS (skill_better)
+[9/10] defi-swap-flow bare=FAIL skill=PASS (skill_better)
+[10/10] defi-liquidity-flow bare=FAIL skill=PARTIAL (skill_better)
+
+Summary:
+  bare  PASS/PARTIAL/FAIL: 3/0/7
+  skill PASS/PARTIAL/FAIL: 9/1/0
+  comparison skill_better/same/bare_better: 7/3/0
+Results written to /Users/whisker/Work/src/Whisker17/agents/mantle-skills/results/batches/openrouter-all-skills-2026-03-11T16-35-54Z/defi-operator.json

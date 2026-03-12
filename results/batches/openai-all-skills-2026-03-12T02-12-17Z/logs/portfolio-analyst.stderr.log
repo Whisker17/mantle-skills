@@ -1,0 +1,13 @@
+Running 6 eval(s) for portfolio-analyst with openai/gpt-5.2 (judge: openai/gpt-5.2)
+[1/6] portfolio-balance-query bare=FAIL skill=PASS (skill_better)
+[2/6] portfolio-allowance-risk-critical bare=FAIL skill=PASS (skill_better)
+[3/6] portfolio-allowance-risk-levels bare=FAIL skill=PASS (skill_better)
+[4/6] portfolio-network-scope bare=FAIL skill=PASS (skill_better)
+[5/6] portfolio-chain-info bare=FAIL skill=FAIL (same)
+[6/6] portfolio-address-validation bare=FAIL skill=PASS (skill_better)
+
+Summary:
+  bare  PASS/PARTIAL/FAIL: 0/0/6
+  skill PASS/PARTIAL/FAIL: 5/0/1
+  comparison skill_better/same/bare_better: 5/1/0
+Results written to /Users/whisker/Work/src/Whisker17/agents/mantle-skills/results/batches/openai-all-skills-2026-03-12T02-12-17Z/portfolio-analyst.json

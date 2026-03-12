@@ -1,0 +1,15 @@
+Running 8 eval(s) for address-registry with openrouter/arcee-ai/trinity-large-preview:free (judge: openrouter/arcee-ai/trinity-large-preview:free)
+[1/8] addr-merchant-moe-router bare=FAIL skill=PASS (skill_better)
+[2/8] addr-agni-router bare=FAIL skill=PASS (skill_better)
+[3/8] addr-aave-v3-pool bare=FAIL skill=PASS (skill_better)
+[4/8] addr-unknown-protocol bare=FAIL skill=PASS (skill_better)
+[5/8] addr-resolution-order bare=FAIL skill=PASS (skill_better)
+[6/8] addr-checksum-validation bare=FAIL skill=PASS (skill_better)
+[7/8] addr-environment-match bare=PASS skill=PASS (same)
+[8/8] addr-agni-quoter bare=FAIL skill=PASS (skill_better)
+
+Summary:
+  bare  PASS/PARTIAL/FAIL: 1/0/7
+  skill PASS/PARTIAL/FAIL: 8/0/0
+  comparison skill_better/same/bare_better: 7/1/0
+Results written to /Users/whisker/Work/src/Whisker17/agents/mantle-skills/results/batches/openrouter-all-skills-2026-03-11T16-35-54Z/address-registry.json

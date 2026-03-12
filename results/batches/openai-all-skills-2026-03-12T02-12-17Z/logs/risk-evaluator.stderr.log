@@ -1,0 +1,8 @@
+Running 8 eval(s) for risk-evaluator with openai/gpt-5.2 (judge: openai/gpt-5.2)
+[1/8] risk-high-slippage bare=FAIL skill=PASS (skill_better)
+[2/8] risk-moderate-slippage bare=FAIL skill=PASS (skill_better)
+[3/8] risk-infinite-approval bare=FAIL skill=PASS (skill_better)
+[4/8] risk-missing-inputs bare=PASS skill=PASS (same)
+[5/8] risk-stale-deadline bare=FAIL skill=PASS (skill_better)
+[6/8] risk-price-impact bare=FAIL skill=PASS (skill_better)
+curl: (56) The requested URL returned error: 502

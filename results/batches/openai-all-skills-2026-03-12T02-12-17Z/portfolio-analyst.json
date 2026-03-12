@@ -1,0 +1,262 @@
+{
+  "generated_at_utc": "2026-03-12T02:19:44Z",
+  "model": "openai/gpt-5.2",
+  "judge_model": "openai/gpt-5.2",
+  "eval_slug": "portfolio-analyst",
+  "eval_file": "evals/portfolio-analyst.yaml",
+  "skill": "mantle-portfolio-analyst",
+  "skill_path": "skills/mantle-portfolio-analyst/SKILL.md",
+  "reference_paths": [
+    "skills/mantle-portfolio-analyst/references/rpc-readonly-workflow.md",
+    "skills/mantle-portfolio-analyst/references/allowance-risk-rules.md"
+  ],
+  "description": "Read-only wallet balance, allowance, and approval-risk analysis on Mantle.",
+  "summary": {
+    "eval_count": 6,
+    "bare": {
+      "PASS": 0,
+      "PARTIAL": 0,
+      "FAIL": 6
+    },
+    "skill": {
+      "PASS": 5,
+      "PARTIAL": 0,
+      "FAIL": 1
+    },
+    "skill_better": 5,
+    "bare_better": 0,
+    "same": 1
+  },
+  "results": [
+    {
+      "id": "portfolio-balance-query",
+      "prompt": "How does the portfolio analyst check a wallet's native and token balances on Mantle?",
+      "expected_facts": [
+        "Use mantle_getBalance for the native balance.",
+        "Use mantle_getTokenBalances for ERC-20 token balances.",
+        "This is a read-only workflow."
+      ],
+      "fail_if": [
+        "Fabricates a different API or direct execution flow.",
+        "Does not mention the balance tools."
+      ],
+      "bare_answer": "A portfolio analyst would check a Mantle wallet’s balances the same way they would on any EVM chain: query the **native coin balance** via `eth_getBalance`, and query **ERC‑20 token balances** by calling each token contract’s `balanceOf(address)` (plus `decimals()` / `symbol()` for display). Mantle is EVM-compatible, so standard Ethereum RPC methods work.\n\n## 1) Native balance (MNT)\n**RPC call:** `eth_getBalance`\n\n- Input: wallet address + block tag (`\"latest\"`)\n- Output: balance in **wei** (convert to MNT by dividing by `1e18`)\n\nExample (JSON-RPC):\n```json\n{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 1,\n  \"method\": \"eth_getBalance\",\n  \"params\": [\"0xWALLET_ADDRESS\", \"latest\"]\n}\n```\n\n## 2) Token balances (ERC‑20)\nFor each token contract you care about:\n\n### a) Read `balanceOf`\n**RPC call:** `eth_call` to the token contract with calldata for:\n- `balanceOf(address)` → function selector `0x70a08231` + padded address\n\nYou can generate calldata with any ABI tool (ethers/web3), or manually.\n\n### b) Read token metadata (for human-readable amounts)\nCall:\n- `decimals()` (selector `0x313ce567`)\n- `symbol()` (selector `0x95d89b41`) *(optional; sometimes returns bytes32 or string)*\n- `name()` (selector `0x06fdde03`) *(optional)*\n\nThen compute:\n- `human = rawBalance / (10 ** decimals)`\n\n## 3) Practical approaches analysts use\n### Option A — Block explorer UI (quick manual check)\nUse a Mantle explorer (e.g., MantleScan) and paste the wallet address to see:\n- Native balance\n- Token holdings (ERC‑20 list)\n\n### Option B — Scripted (repeatable, scalable)\nUse an RPC provider + a library (ethers.js/web3.py) to:\n1) `provider.getBalance(wallet)` for native\n2) Iterate token list and call `balanceOf`, `decimals`, `symbol`\n\n### Option C — Indexer / portfolio API (best for “all tokens”)\nIf you need *all* tokens without maintaining a token list, analysts often use an indexer (explorer APIs, The Graph-style indexers, third-party portfolio APIs) that tracks token contracts and balances.\n\n---\n\nIf you tell me whether you want a **quick explorer workflow** or a **code snippet** (ethers.js or Python), and which **RPC endpoint** you’re using, I can provide a ready-to-run example.",
+      "skill_answer": "The Mantle portfolio analyst does this as a deterministic, read-only sweep using mantle-mcp v0.2 tools (no transactions, no signing):\n\n1. **Confirm inputs & context**\n   - Requires: `wallet_address` and `network` (`mainnet` or `sepolia`).\n   - Validates the wallet format with:\n     - `mantle_validateAddress`\n   - Confirms chain context (and optionally health/status) with:\n     - `mantle_getChainInfo`\n     - `mantle_getChainStatus` (when available)\n\n2. **Fetch the native balance (MNT)**\n   - Calls:\n     - `mantle_getBalance({ address: \"<wallet>\", network: \"<network>\" })`\n   - Reports native balance under **Native Balance – MNT**.\n\n3. **Decide which ERC‑20 tokens to check**\n   - Prefer a user-provided token list.\n   - If not provided, it can pull a bounded token set from `mantle://registry/tokens`.\n   - If the user provides symbols not in scope, it can resolve them before querying (per workflow guidance).\n\n4. **Fetch ERC‑20 token balances**\n   - Calls:\n     - `mantle_getTokenBalances({ address: \"<wallet>\", tokens: [...], network: \"<network>\" })`\n   - Outputs, per token:\n     - `balance_raw`\n     - `decimals` (when known)\n     - `balance_normalized` (preferred when returned by the tool)\n\n5. **Backfill missing token metadata (if needed)**\n   - If a token’s `symbol/decimals` are missing, it uses:\n     - `mantle_getTokenInfo({ token: \"<token_address>\", network: \"<network>\" })`\n   - If still unresolved, it keeps fields as `unknown` (no guessing) and notes reduced confidence.\n\n6. **Reliability/coverage handling**\n   - Verifies the returned network matches the requested one.\n   - If any tool returns partial results or errors, it reports **partial coverage explicitly** rather than inventing balances.\n\nIf you share a wallet address + whether you want `mainnet` or `sepolia`, I can outline the exact token scope you’d likely want (e.g., registry tokens vs a specific protocol set).",
+      "bare_judgment": {
+        "expected_hits": [
+          "This is a read-only workflow."
+        ],
+        "expected_misses": [
+          "Use mantle_getBalance for the native balance.",
+          "Use mantle_getTokenBalances for ERC-20 token balances."
+        ],
+        "fail_triggers": [
+          "Fabricates a different API or direct execution flow.",
+          "Does not mention the balance tools."
+        ],
+        "reasoning": "The expected workflow requires Mantle-specific balance tools: mantle_getBalance and mantle_getTokenBalances. The model answer instead uses generic EVM JSON-RPC methods (eth_getBalance, eth_call balanceOf) and does not mention the required Mantle tools, triggering the fail conditions. While it is read-only, it misses the core required facts and uses a different API flow than specified.",
+        "verdict": "FAIL"
+      },
+      "skill_judgment": {
+        "expected_hits": [
+          "Use mantle_getBalance for the native balance.",
+          "Use mantle_getTokenBalances for ERC-20 token balances.",
+          "This is a read-only workflow."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "Answer explicitly describes a read-only workflow and correctly names mantle_getBalance for native balance and mantle_getTokenBalances for ERC-20 balances. Extra optional steps (validation, chain info, token metadata) do not conflict with requirements and do not fabricate a different balance API or execution flow.",
+        "verdict": "PASS"
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "portfolio-allowance-risk-critical",
+      "prompt": "What makes an allowance exposure critical risk in the portfolio analyst?",
+      "expected_facts": [
+        "Critical risk includes is_unlimited=true from tool output.",
+        "Critical risk also includes allowance values that are effectively near-max, such as greater than or equal to 2^255."
+      ],
+      "fail_if": [
+        "Uses a different threshold for critical unlimited approval risk.",
+        "Treats unlimited approvals as low or medium risk."
+      ],
+      "bare_answer": "In a portfolio analyst context, an **allowance exposure** becomes a **critical risk** when the expected credit loss reserve (the *allowance*) is likely **insufficient, unstable, or overly concentrated** such that it could lead to a **material earnings hit, capital impact, or reporting/regulatory issue** if credit performance worsens or assumptions change.\n\nKey drivers that typically make it “critical”:\n\n- **Materiality to financials/capital**\n  - The exposure (or segment) is large enough that a reasonable adverse scenario would cause a **meaningful increase in provision expense** or reduce **capital ratios**.\n\n- **Low coverage vs. risk (under-reserving)**\n  - **Allowance-to-loan (or allowance-to-exposure) coverage** is low relative to:\n    - the segment’s historical loss experience,\n    - peer/benchmark coverage,\n    - internal risk ratings / PD-LGD expectations,\n    - delinquency and default indicators.\n\n- **Deteriorating credit signals not reflected in allowance**\n  - Rising **delinquencies**, **watchlist**, **nonaccruals/NPLs**, **downgrades**, **forbearance/modifications**, or **utilization increases** while the allowance doesn’t move accordingly.\n\n- **High concentration risk**\n  - Allowance is tied to a **single large borrower**, industry (e.g., CRE office), geography, product type, or correlated collateral—so one shock can drive disproportionate losses.\n\n- **High model/assumption sensitivity**\n  - Allowance depends heavily on uncertain inputs like:\n    - macroeconomic forecasts,\n    - prepayment/lifetime assumptions,\n    - PD/LGD calibrations,\n    - qualitative overlays.\n  - Small changes produce **large swings** in required reserve.\n\n- **Weak data quality or model limitations**\n  - Incomplete borrower financials, stale collateral values, limited history, new products, or known model deficiencies—raising the risk the allowance is **not reliable**.\n\n- **Rapid growth or portfolio mix shift**\n  - Fast origination growth, entry into new risk tiers, or underwriting loosening can cause **latent risk** that isn’t yet visible in performance metrics.\n\n- **Collateral/valuation deterioration**\n  - Falling collateral values, higher LTVs, appraisal lags, or illiquid collateral increase severity (LGD), making current reserves potentially inadequate.\n\n- **Regulatory/audit vulnerability**\n  - If reserving methodology, documentation, or governance is weak, the risk includes **exam findings, audit adjustments, or restatement pressure**.\n\nIf you tell me what “portfolio analyst” tool/framework you mean (e.g., CECL/IFRS 9 allowance monitoring, internal risk dashboard) and the metrics it shows (coverage %, NPL trend, PD/LGD, overlays, concentration), I can map these into the specific thresholds or flags that would classify an allowance exposure as “critical.”",
+      "skill_answer": "In the Mantle Portfolio Analyst, an **allowance exposure** is classified as **`critical` risk** when it indicates an **effectively unlimited token approval** for a spender.\n\nCriteria (from `allowance-risk-rules.md`):\n\n- **`is_unlimited = true`** in the `mantle_getAllowances` output (this is the preferred signal).\n- Or the **allowance raw value equals or is “near-max”**, meaning it’s effectively a max-integer approval. A typical heuristic:\n  - **allowance ≥ 2²⁵⁵** (i.e., extremely close to the maximum possible uint256 allowance)\n\nWhy this is critical:\n- With an unlimited/near-unlimited approval, the spender can usually transfer **up to your full token balance (and future balance)** of that token, until you revoke or reduce the allowance—so the exposure is very large if the spender address is compromised or malicious.\n\nReporting requirement:\n- The report must include a **rationale** explaining that the approval is unlimited/near-unlimited and therefore represents broad transfer authority.",
+      "bare_judgment": {
+        "expected_hits": [],
+        "expected_misses": [
+          "Critical risk includes is_unlimited=true from tool output.",
+          "Critical risk also includes allowance values that are effectively near-max, such as greater than or equal to 2^255."
+        ],
+        "fail_triggers": [],
+        "reasoning": "The prompt is about ERC-20 allowance exposure risk classification in a portfolio analyst, where critical risk is defined by unlimited approvals (is_unlimited=true) or near-max allowance values (>=2^255). The model answer instead discusses credit-loss reserve allowances (CECL/IFRS9) and never mentions unlimited token approvals or the required numeric threshold. It also does not introduce an incorrect threshold or down-rank unlimited approvals, so no explicit fail_if is triggered, but it misses all expected facts.",
+        "verdict": "FAIL"
+      },
+      "skill_judgment": {
+        "expected_hits": [
+          "Critical risk includes is_unlimited=true from tool output.",
+          "Critical risk also includes allowance values that are effectively near-max, such as greater than or equal to 2^255."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly states that critical risk is triggered by `is_unlimited=true` and also by near-max allowance values using the >=2^255 threshold. It does not introduce an alternate threshold or downplay unlimited approvals, so no fail conditions are triggered.",
+        "verdict": "PASS"
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "portfolio-allowance-risk-levels",
+      "prompt": "What allowance risk levels does the portfolio analyst use?",
+      "expected_facts": [
+        "The allowance risk levels are low, medium, high, and critical."
+      ],
+      "fail_if": [
+        "Uses a different risk-level set.",
+        "Omits critical from the risk levels."
+      ],
+      "bare_answer": "I don’t have enough context to know which organization/model you mean, but in most portfolio allowance (CECL/IFRS 9) workflows a portfolio analyst typically uses a simple tiering like:\n\n- **Low risk**\n- **Medium (moderate) risk**\n- **High risk**\n\nSome firms add more granularity, e.g.:\n\n- **Pass / Watch / Special Mention / Substandard / Doubtful / Loss** (common in credit risk rating / criticized asset frameworks), or\n- **Stage 1 / Stage 2 / Stage 3** (IFRS 9 staging).\n\nIf you tell me the system/framework you’re referring to (e.g., CECL vs IFRS 9, or an internal policy name/tool), I can list the exact allowance risk levels it uses.",
+      "skill_answer": "The Mantle Portfolio Analyst classifies ERC‑20 approval (allowance) exposure into four risk levels:\n\n- **low**\n  - Allowance is **zero**, or\n  - Allowance is **tightly bounded** and clearly below what’s reasonably needed.\n\n- **medium**\n  - Allowance is **non-zero** and larger than immediate expected use, but **still bounded**.\n\n- **high**\n  - Allowance is **very large** relative to expected use, or\n  - Allowance appears **intentionally broad** with unclear user intent.\n\n- **critical**\n  - Tool output indicates **`is_unlimited=true`** (preferred signal), or\n  - Allowance is **near-max integer** approval (heuristic: value **≥ 2^255**).\n\nEach allowance entry must include a **rationale** explaining why it received that label, and spender trust is treated as **unknown** unless verified from Mantle’s protocol registry or user-confirmed.",
+      "bare_judgment": {
+        "expected_hits": [
+          "Mentions low, medium, and high risk levels."
+        ],
+        "expected_misses": [
+          "Does not include critical as one of the allowance risk levels.",
+          "Does not state the full required set: low, medium, high, critical."
+        ],
+        "fail_triggers": [
+          "Uses a different risk-level set.",
+          "Omits critical from the risk levels."
+        ],
+        "reasoning": "The expected allowance risk levels are explicitly low, medium, high, and critical. The model answer lists only low/medium/high and suggests alternative frameworks, which both omits 'critical' and presents different sets, triggering the fail conditions.",
+        "verdict": "FAIL"
+      },
+      "skill_judgment": {
+        "expected_hits": [
+          "The allowance risk levels are low, medium, high, and critical."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer explicitly lists the four allowance risk levels as low, medium, high, and critical, matching the expected set and including critical. Additional detail about definitions does not conflict with the required facts.",
+        "verdict": "PASS"
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "portfolio-network-scope",
+      "prompt": "What Mantle networks does the portfolio analyst support in this repo?",
+      "expected_facts": [
+        "The supported networks are mainnet and sepolia."
+      ],
+      "fail_if": [
+        "Claims the skill supports other networks in this repo.",
+        "Does not mention mainnet and sepolia."
+      ],
+      "bare_answer": "I can’t determine that from the info provided because I don’t have access to your repository contents.\n\nIf you paste the relevant file(s) (typically something like `README.md`, a `networks/` or `chains/` config, or the portfolio analyst module), or share a link to the repo, I can tell you exactly which Mantle networks are supported.\n\nQuick way to find it yourself:\n- Search the repo for `Mantle`, `mantle`, `chainId`, or `mantle-testnet`.\n- Look for chain definitions (often `mainnet` / `testnet`) where Mantle usually appears as:\n  - Mantle Mainnet (chainId **5000**)\n  - Mantle Sepolia / testnet (often chainId **5003**, depending on the setup)",
+      "skill_answer": "The Mantle Portfolio Analyst skill in this repo supports **two networks**:\n\n- **Mantle mainnet** (`network: \"mainnet\"`)\n- **Mantle Sepolia testnet** (`network: \"sepolia\"`)\n\nThese are explicitly called out as the allowed `network` input in the workflow/guardrails (“`network` (`mainnet` or `sepolia`)”).",
+      "bare_judgment": {
+        "expected_hits": [],
+        "expected_misses": [
+          "The supported networks are mainnet and sepolia."
+        ],
+        "fail_triggers": [
+          "Does not mention mainnet and sepolia."
+        ],
+        "reasoning": "The prompt expects the specific supported networks (mainnet and sepolia). The model answer says it cannot determine from provided info and does not affirm that the repo supports mainnet and sepolia; it only gives a general search strategy and mentions Mantle Mainnet and Mantle Sepolia as possibilities. This triggers the fail condition for not mentioning mainnet and sepolia as the supported networks.",
+        "verdict": "FAIL"
+      },
+      "skill_judgment": {
+        "expected_hits": [
+          "The supported networks are mainnet and sepolia."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The model answer explicitly states the repo supports Mantle mainnet and Mantle Sepolia and does not claim support for any other networks, satisfying the expected facts and avoiding all fail conditions.",
+        "verdict": "PASS"
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "portfolio-chain-info",
+      "prompt": "How does the portfolio analyst confirm chain context and chain status before querying balances or allowances?",
+      "expected_facts": [
+        "Use mantle_getChainInfo to confirm the requested network context.",
+        "Use mantle_getChainStatus when available."
+      ],
+      "fail_if": [
+        "Fabricates chain-status tool names.",
+        "Skips chain-context confirmation."
+      ],
+      "bare_answer": "Before it queries *any* on-chain state (balances, allowances), the portfolio analyst first makes sure it’s pointing at the right network and that the network is usable. Concretely, it does two checks:\n\n1) **Confirm chain context (correct network)**\n- Uses the active provider/client and reads the chain identifier (e.g., `eth_chainId` / `getChainId()`).\n- Compares that value to the chain it *intends* to query (the user-selected chain or the chain implied by the asset/contract address).\n- If there’s a mismatch, it switches to the correct RPC/client or aborts with a “wrong network/chain mismatch” error rather than querying the wrong chain.\n\n2) **Confirm chain status (network is healthy enough to query)**\n- Performs a lightweight liveness/sync check before making contract calls, typically by:\n  - Fetching a recent block (`eth_blockNumber` / `getBlockNumber()`), and optionally\n  - Checking node sync/health (`eth_syncing`) or verifying the latest block isn’t stale.\n- If the RPC is down, rate-limited, unsynced, or returning stale heights, it marks the chain as unavailable/degraded and either:\n  - retries/backoffs,\n  - fails over to a secondary RPC, or\n  - skips balance/allowance queries for that chain and surfaces a “chain unavailable” status.\n\nOnly after both **(a) chain id matches** and **(b) the RPC is responsive and current** does it proceed to query balances (`balanceOf`, native balance) or allowances (`allowance`).",
+      "skill_answer": "It does two explicit checks up front—*before* calling any balance/allowance methods:\n\n1. **Validate the address format (sanity check)**\n   - Call: `mantle_validateAddress`\n   - Purpose: ensure the wallet (and later any token/spender) is a valid, checksummed address so you don’t waste calls or mis-report results due to malformed inputs.\n\n2. **Confirm chain context (network/chain ID)**\n   - Call: `mantle_getChainInfo`\n   - Purpose: verify you’re actually pointed at the intended Mantle environment (`mainnet` vs `sepolia`) and capture identifiers like `chain_id` for the report.\n   - Reliability rule: compare the returned chain/network fields to the requested `network`; if they don’t match, stop or flag coverage as unreliable rather than proceeding.\n\n3. **Confirm chain status (liveness / health)**\n   - Call: `mantle_getChainStatus` (when available)\n   - Purpose: ensure the chain/RPC is healthy enough to trust read results (e.g., not degraded, behind, or otherwise inconsistent).\n   - If status indicates issues or the call fails, proceed only with explicit “partial/low confidence” notes (and avoid inventing missing data).\n\nOnly after these steps does the workflow proceed to:\n- `mantle_getBalance`\n- `mantle_getTokenBalances`\n- `mantle_getAllowances`\n\nThis sequencing is mandated by the “RPC Read-Only Workflow” reference: validate address → get chain info (+ chain status) → query balances/allowances.",
+      "bare_judgment": {
+        "expected_hits": [],
+        "expected_misses": [
+          "Use mantle_getChainInfo to confirm the requested network context.",
+          "Use mantle_getChainStatus when available."
+        ],
+        "fail_triggers": [
+          "Skips chain-context confirmation",
+          "Fabricates chain-status tool names."
+        ],
+        "reasoning": "The expected Mantle workflow requires using mantle_getChainInfo for chain context and mantle_getChainStatus for chain status. The model answer instead describes generic JSON-RPC calls (eth_chainId, eth_blockNumber, eth_syncing) and never references the required Mantle tools, which is a material miss. It also effectively skips the mandated chain-context confirmation method (mantle_getChainInfo) and invents alternative tool methodology rather than using mantle_getChainStatus when available, triggering the fail conditions as specified.",
+        "verdict": "FAIL"
+      },
+      "skill_judgment": {
+        "expected_hits": [
+          "Use mantle_getChainInfo to confirm the requested network context.",
+          "Use mantle_getChainStatus when available."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [
+          "Fabricates chain-status tool names."
+        ],
+        "reasoning": "The answer correctly includes mantle_getChainInfo and mantle_getChainStatus, but it also introduces mantle_validateAddress and a named “RPC Read-Only Workflow” reference that are not part of the prompt/tools list and may be fabricated. Under the strict fail condition about fabricating chain-status tool names/tools, mentioning an unverified tool name triggers a fail despite otherwise correct chain context/status steps.",
+        "verdict": "FAIL"
+      },
+      "comparison": "same"
+    },
+    {
+      "id": "portfolio-address-validation",
+      "prompt": "What should happen before querying a wallet, token, or spender address in the portfolio analyst?",
+      "expected_facts": [
+        "Use mantle_validateAddress before the read-only queries.",
+        "Validate wallet, token, and spender addresses instead of guessing.",
+        "If addresses are invalid, the workflow should not proceed as if they were trusted."
+      ],
+      "fail_if": [
+        "Does not include an address-validation step.",
+        "Guesses token or spender addresses."
+      ],
+      "bare_answer": "Before the portfolio analyst queries any **wallet**, **token**, or **spender** address, it should first **validate and normalize the address**:\n\n- **Check format**: ensure it’s a syntactically valid address for the target chain (e.g., EVM `0x` + 40 hex chars).\n- **Normalize**: convert to a canonical form (e.g., EVM lowercase or checksum/EIP-55, consistent internal representation).\n- **Reject obvious bad inputs**: empty strings, wrong length, non-hex characters, incorrect prefix, etc.\n- **Confirm chain context** (if multi-chain): make sure the address type matches the chain being queried.\n\nOnly after this validation/normalization step should the system proceed with portfolio queries.",
+      "skill_answer": "Before querying any **wallet**, **token**, or **spender** address in the Mantle portfolio analyst workflow, you should:\n\n- **Validate the address format (and checksum) first** using `mantle_validateAddress`.\n- **Ensure the chain context is correct** (so you don’t query the right address on the wrong network) by confirming the target network via:\n  - `mantle_getChainInfo` (and optionally `mantle_getChainStatus`)\n\nIf an address fails validation, you should stop (or exclude that entry) rather than attempting balance/allowance queries with it.",
+      "bare_judgment": {
+        "expected_hits": [
+          "Validate wallet, token, and spender addresses instead of guessing.",
+          "If addresses are invalid, the workflow should not proceed as if they were trusted."
+        ],
+        "expected_misses": [
+          "Use mantle_validateAddress before the read-only queries."
+        ],
+        "fail_triggers": [
+          "Does not include an address-validation step."
+        ],
+        "reasoning": "The answer describes generic validation/normalization and says to validate before querying, but it does not explicitly require using the mantle_validateAddress tool as specified. Given the fail condition requires an address-validation step (in the skill’s context, mantle_validateAddress), the omission triggers that fail_if. It also does not guess any addresses, which is good.",
+        "verdict": "FAIL"
+      },
+      "skill_judgment": {
+        "expected_hits": [
+          "Use mantle_validateAddress before the read-only queries.",
+          "Validate wallet, token, and spender addresses instead of guessing.",
+          "If addresses are invalid, the workflow should not proceed as if they were trusted."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer explicitly requires using mantle_validateAddress prior to any queries, applies validation to wallet/token/spender addresses, and states to stop/exclude invalid addresses. It does not guess any addresses and includes the required validation step.",
+        "verdict": "PASS"
+      },
+      "comparison": "skill_better"
+    }
+  ]
+}
