@@ -15,7 +15,7 @@ Options:
   --model <value>        Required target model
   --judge-model <value>  Optional judge model; defaults to --model
   --label <value>        Optional output label; defaults to sanitized model name
-  --evals-dir <path>     Optional eval directory; defaults to repo evals/
+  --evals-dir <path>     Optional eval root or specs directory; defaults to repo evals/
   --results-dir <path>   Optional output root; defaults to evals/results/batches/
   --runner <path>        Optional single-skill runner; defaults to evals/runner/run.sh
   --help                 Show this help text
@@ -33,6 +33,17 @@ require_cmd() {
 
 sanitize_label() {
   printf '%s\n' "$1" | tr '/: ' '---' | tr -cd 'A-Za-z0-9._-'
+}
+
+resolve_eval_search_dir() {
+  local evals_dir="$1"
+  local specs_dir="$evals_dir/specs"
+
+  if [[ -d "$specs_dir" ]]; then
+    printf '%s\n' "$specs_dir"
+  else
+    printf '%s\n' "$evals_dir"
+  fi
 }
 
 run_skill_with_progress() {
@@ -142,20 +153,21 @@ main() {
   judge_model="${judge_model:-$model}"
   label="${label:-$(sanitize_label "$model")}"
 
-  local timestamp batch_dir logs_dir summary_file
+  local timestamp batch_dir logs_dir summary_file eval_search_dir
   timestamp=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
   batch_dir="$results_dir/${label}-${timestamp}"
   logs_dir="$batch_dir/logs"
   summary_file="$batch_dir/summary.json"
 
   mkdir -p "$logs_dir"
+  eval_search_dir=$(resolve_eval_search_dir "$evals_dir")
 
   local -a eval_files=()
   while IFS= read -r file; do
     eval_files+=("$file")
-  done < <(find "$evals_dir" -maxdepth 1 -name '*.yaml' -type f | sort)
+  done < <(find "$eval_search_dir" -maxdepth 1 -name '*.yaml' -type f | sort)
 
-  (( ${#eval_files[@]} > 0 )) || die "no eval YAML files found in: $evals_dir"
+  (( ${#eval_files[@]} > 0 )) || die "no eval YAML files found in: $eval_search_dir"
 
   local runs_json='{}'
   local skills_total=0
@@ -170,6 +182,7 @@ main() {
   printf 'Batch directory: %s\n' "$batch_dir" >&2
   printf 'Logs directory: %s\n' "$logs_dir" >&2
   printf 'Summary file: %s\n' "$summary_file" >&2
+  printf 'Eval specs directory: %s\n' "$eval_search_dir" >&2
 
   for eval_file in "${eval_files[@]}"; do
     index=$((index + 1))
@@ -236,6 +249,7 @@ main() {
     --arg model "$model" \
     --arg judge_model "$judge_model" \
     --arg evals_dir "$evals_dir" \
+    --arg eval_search_dir "$eval_search_dir" \
     --arg runner "$runner" \
     --argjson skills_total "$skills_total" \
     --argjson skills_succeeded "$skills_succeeded" \
@@ -249,6 +263,7 @@ main() {
       model: $model,
       judge_model: $judge_model,
       evals_dir: $evals_dir,
+      eval_search_dir: $eval_search_dir,
       runner: $runner,
       skills_total: $skills_total,
       skills_succeeded: $skills_succeeded,

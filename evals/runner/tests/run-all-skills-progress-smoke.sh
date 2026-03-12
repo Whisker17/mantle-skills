@@ -7,11 +7,12 @@ TMPDIR=$(mktemp -d)
 trap "rm -rf '$TMPDIR'" EXIT
 
 EVALS_DIR="$TMPDIR/evals"
+SPECS_DIR="$EVALS_DIR/specs"
 RESULTS_DIR="$TMPDIR/results"
 FAKE_RUNNER="$TMPDIR/fake-runner.sh"
-mkdir -p "$EVALS_DIR" "$RESULTS_DIR"
+mkdir -p "$SPECS_DIR" "$RESULTS_DIR"
 
-cat > "$EVALS_DIR/alpha.yaml" <<'EOF'
+cat > "$SPECS_DIR/alpha.yaml" <<'EOF'
 skill: alpha
 skill_path: skills/mantle-network-primer/SKILL.md
 reference_paths: []

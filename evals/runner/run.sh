@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd "$SCRIPT_DIR/../.." && pwd)
 EVALS_DIR="$REPO_ROOT/evals"
+EVAL_SPECS_DIR="$EVALS_DIR/specs"
 RESULTS_DIR="$REPO_ROOT/evals/results"
 JUDGE_PROMPT_FILE="$SCRIPT_DIR/judge.md"
 YAML_BACKEND=""
@@ -122,9 +123,19 @@ yaml_json_query() {
   fi
 }
 
+eval_search_dir() {
+  if [[ -d "$EVAL_SPECS_DIR" ]]; then
+    printf '%s\n' "$EVAL_SPECS_DIR"
+  else
+    printf '%s\n' "$EVALS_DIR"
+  fi
+}
+
 list_skills() {
-  local file
-  for file in "$EVALS_DIR"/*.yaml; do
+  local search_dir file
+  search_dir=$(eval_search_dir)
+
+  for file in "$search_dir"/*.yaml; do
     [[ -e "$file" ]] || continue
     basename "$file" .yaml
   done | sort
@@ -132,19 +143,26 @@ list_skills() {
 
 resolve_eval_file() {
   local requested="$1"
+  local search_dir file skill_name legacy_basename
+  search_dir=$(eval_search_dir)
 
   if [[ -f "$requested" ]]; then
     printf '%s\n' "$requested"
     return
   fi
 
-  if [[ -f "$EVALS_DIR/$requested.yaml" ]]; then
-    printf '%s\n' "$EVALS_DIR/$requested.yaml"
+  if [[ -f "$search_dir/$requested.yaml" ]]; then
+    printf '%s\n' "$search_dir/$requested.yaml"
     return
   fi
 
-  local file skill_name
-  for file in "$EVALS_DIR"/*.yaml; do
+  legacy_basename=$(basename "$requested")
+  if [[ -f "$search_dir/$legacy_basename" ]]; then
+    printf '%s\n' "$search_dir/$legacy_basename"
+    return
+  fi
+
+  for file in "$search_dir"/*.yaml; do
     [[ -e "$file" ]] || continue
     skill_name=$(yaml_raw_query "$file" '.skill')
     if [[ "$skill_name" == "$requested" ]]; then
