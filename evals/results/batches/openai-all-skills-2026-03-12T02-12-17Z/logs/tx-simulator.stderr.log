@@ -1,5 +1,0 @@
-Running 6 eval(s) for tx-simulator with openai/gpt-5.2 (judge: openai/gpt-5.2)
-[1/6] sim-mcp-capability bare=PASS skill=FAIL (bare_better)
-[2/6] sim-backends bare=FAIL skill=PASS (skill_better)
-[3/6] sim-inconclusive bare=FAIL skill=PASS (skill_better)
-curl: (56) The requested URL returned error: 502

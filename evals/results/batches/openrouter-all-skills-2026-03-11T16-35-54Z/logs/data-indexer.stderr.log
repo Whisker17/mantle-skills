@@ -1,2 +1,0 @@
-Running 6 eval(s) for data-indexer with openrouter/arcee-ai/trinity-large-preview:free (judge: openrouter/arcee-ai/trinity-large-preview:free)
-jq: parse error: Unfinished JSON term at EOF at line 9, column 0

@@ -7,12 +7,15 @@
 ### Setup
 
 - **Models tested:** `openrouter/arcee-ai/trinity-large-preview:free`, `openai/gpt-5.2`
+- **Model selection rationale:**
+  - `openrouter/arcee-ai/trinity-large-preview:free` was chosen to test skill uplift when base model capability is relatively weak; model page: [OpenRouter - Trinity Large Preview (free)](https://openrouter.ai/arcee-ai/trinity-large-preview:free)
+  - `openai/gpt-5.2` was used as a stronger reference model for comparison
 - **Judge model:** same as tested model in each run
 - **Evals:** 71 total across 10 skill suites
 - **A/B test:** each prompt run twice (`with skill` vs `bare`)
 - **Result folders:**
-  - `evals/results/batches/openrouter-all-skills-2026-03-11T16-35-54Z`
-  - `evals/results/batches/openai-all-skills-2026-03-12T02-12-17Z`
+  - [`evals/results/batches/openrouter-all-skills-2026-03-11T16-35-54Z`](./batches/openrouter-all-skills-2026-03-11T16-35-54Z)
+  - [`evals/results/batches/openai-all-skills-2026-03-12T02-12-17Z`](./batches/openai-all-skills-2026-03-12T02-12-17Z)
 
 ---
 
@@ -36,18 +39,18 @@
 Legend: `✅ pass`, `⚠️ partial`, `❌ fail`, `— not completed`
 
 
-| Skill                    | Evals | OpenRouter w/    | OpenRouter w/o   | OpenAI w/        | OpenAI w/o       |
-| ------------------------ | ----- | ---------------- | ---------------- | ---------------- | ---------------- |
-| address-registry         | 8     | ✅ 8 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 0 / ❌ 7 | —                | —                |
-| data-indexer             | 6     | —                | —                | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 1 / ❌ 4 |
-| defi-operator            | 10    | ✅ 9 / ⚠️ 1 / ❌ 0 | ✅ 3 / ⚠️ 0 / ❌ 7 | —                | —                |
-| network-primer           | 9     | ✅ 9 / ⚠️ 0 / ❌ 0 | ✅ 2 / ⚠️ 0 / ❌ 7 | —                | —                |
-| portfolio-analyst        | 6     | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 0 / ⚠️ 0 / ❌ 6 | ✅ 5 / ⚠️ 0 / ❌ 1 | ✅ 0 / ⚠️ 0 / ❌ 6 |
-| readonly-debugger        | 6     | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 3 / ⚠️ 2 / ❌ 1 | —                | —                |
-| risk-evaluator           | 8     | ✅ 7 / ⚠️ 0 / ❌ 1 | ✅ 1 / ⚠️ 1 / ❌ 6 | —                | —                |
-| smart-contract-deployer  | 6     | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 1 / ❌ 4 | ✅ 5 / ⚠️ 1 / ❌ 0 | ✅ 0 / ⚠️ 2 / ❌ 4 |
-| smart-contract-developer | 6     | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 2 / ❌ 3 | —                | —                |
-| tx-simulator             | 6     | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 2 / ⚠️ 1 / ❌ 3 | —                | —                |
+| Skill                    | Evals | JSON | OpenRouter w/    | OpenRouter w/o   | OpenAI w/        | OpenAI w/o       |
+| ------------------------ | ----- | ---- | ---------------- | ---------------- | ---------------- | ---------------- |
+| address-registry         | 8     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/address-registry.json) | ✅ 8 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 0 / ❌ 7 | —                | —                |
+| data-indexer             | 6     | [OpenAI](./batches/openai-all-skills-2026-03-12T02-12-17Z/data-indexer.json) | —                | —                | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 1 / ❌ 4 |
+| defi-operator            | 10    | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/defi-operator.json) | ✅ 9 / ⚠️ 1 / ❌ 0 | ✅ 3 / ⚠️ 0 / ❌ 7 | —                | —                |
+| network-primer           | 9     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/network-primer.json) | ✅ 9 / ⚠️ 0 / ❌ 0 | ✅ 2 / ⚠️ 0 / ❌ 7 | —                | —                |
+| portfolio-analyst        | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/portfolio-analyst.json), [OpenAI](./batches/openai-all-skills-2026-03-12T02-12-17Z/portfolio-analyst.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 0 / ⚠️ 0 / ❌ 6 | ✅ 5 / ⚠️ 0 / ❌ 1 | ✅ 0 / ⚠️ 0 / ❌ 6 |
+| readonly-debugger        | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/readonly-debugger.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 3 / ⚠️ 2 / ❌ 1 | —                | —                |
+| risk-evaluator           | 8     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/risk-evaluator.json) | ✅ 7 / ⚠️ 0 / ❌ 1 | ✅ 1 / ⚠️ 1 / ❌ 6 | —                | —                |
+| smart-contract-deployer  | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/smart-contract-deployer.json), [OpenAI](./batches/openai-all-skills-2026-03-12T02-12-17Z/smart-contract-deployer.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 1 / ❌ 4 | ✅ 5 / ⚠️ 1 / ❌ 0 | ✅ 0 / ⚠️ 2 / ❌ 4 |
+| smart-contract-developer | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/smart-contract-developer.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 1 / ⚠️ 2 / ❌ 3 | —                | —                |
+| tx-simulator             | 6     | [OpenRouter](./batches/openrouter-all-skills-2026-03-11T16-35-54Z/tx-simulator.json) | ✅ 6 / ⚠️ 0 / ❌ 0 | ✅ 2 / ⚠️ 1 / ❌ 3 | —                | —                |
 
 
 ---
