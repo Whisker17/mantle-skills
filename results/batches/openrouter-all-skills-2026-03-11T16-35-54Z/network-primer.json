@@ -1,0 +1,355 @@
+{
+  "generated_at_utc": "2026-03-11T16:54:42Z",
+  "model": "openrouter/arcee-ai/trinity-large-preview:free",
+  "judge_model": "openrouter/arcee-ai/trinity-large-preview:free",
+  "eval_slug": "network-primer",
+  "eval_file": "evals/network-primer.yaml",
+  "skill": "mantle-network-primer",
+  "skill_path": "skills/mantle-network-primer/SKILL.md",
+  "reference_paths": [
+    "skills/mantle-network-primer/references/mantle-network-basics.md"
+  ],
+  "description": "Mantle network fundamentals, chain settings, architecture, and onboarding guidance.",
+  "summary": {
+    "eval_count": 9,
+    "bare": {
+      "PASS": 2,
+      "PARTIAL": 0,
+      "FAIL": 7
+    },
+    "skill": {
+      "PASS": 9,
+      "PARTIAL": 0,
+      "FAIL": 0
+    },
+    "skill_better": 7,
+    "bare_better": 0,
+    "same": 2
+  },
+  "results": [
+    {
+      "id": "primer-gas-token",
+      "prompt": "What token do I need to pay gas on Mantle, and what common assumption should I avoid?",
+      "expected_facts": [
+        "MNT is the gas token on Mantle.",
+        "Developers should not assume ETH-funded wallets can transact on Mantle."
+      ],
+      "fail_if": [
+        "Says gas is paid in ETH on Mantle.",
+        "Does not mention MNT."
+      ],
+      "bare_answer": "To pay gas on Mantle, you need to use ETH (Ethereum). A common assumption to avoid is thinking that MNT (Mantle's native token) can be used to pay for gas fees. While MNT is used for governance and other functions within the Mantle ecosystem, gas fees must be paid in ETH.",
+      "skill_answer": "On Mantle, you need to pay gas with `MNT`, not `ETH`. A common assumption to avoid is thinking that an `ETH`-funded wallet will work for transactions on Mantle—it won't. Always ensure your wallet is funded with `MNT` before attempting to transact.",
+      "bare_judgment": {
+        "verdict": "FAIL",
+        "expected_hits": [],
+        "expected_misses": [
+          "MNT is the gas token on Mantle.",
+          "Developers should not assume ETH-funded wallets can transact on Mantle."
+        ],
+        "fail_triggers": [
+          "Says gas is paid in ETH on Mantle."
+        ],
+        "reasoning": "The answer incorrectly states that ETH is used to pay gas on Mantle, which directly contradicts the expected fact that MNT is the gas token. It also fails to mention MNT as the correct gas token and instead reinforces the wrong assumption. This triggers the fail condition for claiming gas is paid in ETH on Mantle."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "MNT is the gas token on Mantle.",
+          "Developers should not assume ETH-funded wallets can transact on Mantle."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly identifies MNT as the gas token and explicitly warns against assuming ETH-funded wallets will work on Mantle. It covers both required facts without triggering any fail conditions."
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "primer-chain-id",
+      "prompt": "What are the Mantle chain IDs for mainnet and Sepolia testnet?",
+      "expected_facts": [
+        "Mantle mainnet chain ID is 5000.",
+        "Mantle Sepolia testnet chain ID is 5003."
+      ],
+      "fail_if": [
+        "Gives the wrong chain ID for mainnet or Sepolia.",
+        "Claims there is only one Mantle chain ID."
+      ],
+      "bare_answer": "The Mantle chain ID for the mainnet is 5125500. For the Sepolia testnet, the chain ID is 5125501.",
+      "skill_answer": "The Mantle chain IDs are:\n\n- **Mainnet**: `5000`\n- **Sepolia testnet**: `5003`\n\nThese values are from the Mantle Network Quick Access snapshot verified on March 8, 2026. For the latest values, please check the official Mantle documentation.",
+      "bare_judgment": {
+        "verdict": "FAIL",
+        "expected_hits": [],
+        "expected_misses": [
+          "Mantle mainnet chain ID is 5000.",
+          "Mantle Sepolia testnet chain ID is 5003."
+        ],
+        "fail_triggers": [
+          "Gives the wrong chain ID for mainnet or Sepolia."
+        ],
+        "reasoning": "The model answer provides incorrect chain IDs (5125500 for mainnet and 5125501 for Sepolia) instead of the correct ones (5000 for mainnet and 5003 for Sepolia). This directly triggers the fail condition for giving wrong chain IDs."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "Mantle mainnet chain ID is 5000.",
+          "Mantle Sepolia testnet chain ID is 5003."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly provides both required chain IDs: 5000 for mainnet and 5003 for Sepolia testnet. It does not give wrong IDs, does not claim there is only one chain ID, and includes appropriate context about verification and documentation."
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "primer-rpc-endpoint",
+      "prompt": "What is the official public RPC endpoint for Mantle mainnet?",
+      "expected_facts": [
+        "The public Mantle mainnet RPC endpoint is https://rpc.mantle.xyz."
+      ],
+      "fail_if": [
+        "Provides a hallucinated or unofficial Mantle mainnet RPC URL.",
+        "Answers with a Sepolia or non-Mantle endpoint."
+      ],
+      "bare_answer": "The official public RPC endpoint for Mantle mainnet is:\n\nhttps://mainnet-rpc.mantle.xyz\n\nThis endpoint allows developers and users to interact with the Mantle blockchain, submit transactions, and query blockchain data.",
+      "skill_answer": "The official public RPC endpoint for Mantle mainnet is:\n\n**https://rpc.mantle.xyz**\n\nThis endpoint supports both HTTP and WebSocket connections (WebSocket: `wss://rpc.mantle.xyz`). The chain ID is `5000` and the token symbol is `MNT`.\n\nNote that Mantle docs indicate official public RPC endpoints are rate-limited for stability, so for high-frequency or production workloads you should use dedicated provider endpoints instead.",
+      "bare_judgment": {
+        "verdict": "FAIL",
+        "expected_hits": [],
+        "expected_misses": [
+          "The public Mantle mainnet RPC endpoint is https://rpc.mantle.xyz."
+        ],
+        "fail_triggers": [
+          "Provides a hallucinated or unofficial Mantle mainnet RPC URL."
+        ],
+        "reasoning": "The model answer provides a different RPC URL (https://mainnet-rpc.mantle.xyz) than the expected official endpoint (https://rpc.mantle.xyz). This constitutes a hallucinated or unofficial URL, which directly triggers the fail condition. The answer does not match the required expected fact."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "The public Mantle mainnet RPC endpoint is https://rpc.mantle.xyz."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly identifies the official public RPC endpoint as https://rpc.mantle.xyz, which matches the expected fact exactly. It does not provide any hallucinated or unofficial URLs, nor does it answer with a Sepolia or non-Mantle endpoint. The additional context about WebSocket support, chain ID, token symbol, and rate-limiting is supplementary and does not contradict any requirements."
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "primer-settlement-vs-inclusion",
+      "prompt": "Is a Mantle transaction fully final once it appears in an L2 block?",
+      "expected_facts": [
+        "L2 inclusion is not the same as L1-backed settlement/finality.",
+        "A transaction being visible in an L2 block does not mean the strongest settlement assurance has been reached."
+      ],
+      "fail_if": [
+        "Claims L2 inclusion is the same thing as final settlement.",
+        "Does not distinguish inclusion from L1-backed settlement/finality."
+      ],
+      "bare_answer": "No, a Mantle transaction is not fully final once it appears in an L2 block. While the transaction is considered final on the L2 network at this point, it still needs to be confirmed on the Ethereum mainnet for complete finality. This is because Mantle uses a rollup architecture, where L2 transactions are periodically batched and submitted to Ethereum for final settlement. The process of confirming these batches on Ethereum typically takes around 7 days due to the fraud proof window. Therefore, while users can interact with the transaction on L2 immediately, the full finality is achieved only after the Ethereum confirmation is complete.",
+      "skill_answer": "No, a Mantle transaction is not fully final once it appears in an L2 block. Here's why:\n\n## Transaction Inclusion vs. Final Settlement\n\nWhen a transaction appears in an L2 block on Mantle, it has achieved **inclusion** - meaning it's been processed and recorded by the Layer 2 network. However, this is different from **L1-backed settlement finality**.\n\n## The Two-Step Process\n\n1. **Inclusion**: The transaction is included in an L2 block and can be seen on Mantle explorers like Mantlescan\n\n2. **Settlement/Finalization**: For the strongest security guarantees, the transaction must be settled on Ethereum L1 through Mantle's settlement layer\n\n## Why This Matters\n\nMantle is an Ethereum-aligned Layer 2, which means:\n- L2 execution is fast and cheap\n- Security and final settlement are anchored to Ethereum L1\n- The transaction must go through the proving and settlement process to achieve L1-backed finality\n\n## Practical Implications\n\n- Users can see their transaction included quickly on Mantle\n- For high-value transactions or when maximum security is needed, wait for L1 settlement\n- The time between inclusion and final settlement varies based on network conditions\n\nThis distinction between inclusion and final settlement is fundamental to understanding Layer 2 security models.",
+      "bare_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "L2 inclusion is not the same as L1-backed settlement/finality.",
+          "A transaction being visible in an L2 block does not mean the strongest settlement assurance has been reached."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly states that L2 inclusion is not the same as full finality and that confirmation on Ethereum is needed for complete finality. It accurately explains the distinction between L2 finality and L1-backed settlement, and mentions the fraud proof window period. The answer does not claim L2 inclusion equals final settlement and clearly distinguishes between the two levels of finality, satisfying all expected facts without triggering any fail conditions."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "L2 inclusion is not the same as L1-backed settlement/finality.",
+          "A transaction being visible in an L2 block does not mean the strongest settlement assurance has been reached."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly distinguishes between L2 inclusion and L1-backed settlement finality, explicitly stating that a transaction appearing in an L2 block is not fully final. It covers both expected facts: (1) L2 inclusion is not the same as L1-backed settlement/finality, and (2) visibility in an L2 block does not mean strongest settlement assurance has been reached. The answer does not trigger any fail conditions - it does not claim L2 inclusion is final settlement, and it clearly distinguishes inclusion from L1-backed settlement. The explanation is thorough and accurate regarding Mantle's two-step process."
+      },
+      "comparison": "same"
+    },
+    {
+      "id": "primer-wrapped-mnt",
+      "prompt": "What is the wrapped MNT (WMNT) address on Mantle mainnet?",
+      "expected_facts": [
+        "The WMNT address on Mantle mainnet is 0x78c1b0C915c4FAA5FffA6CAbf0219DA63d7f4cb8."
+      ],
+      "fail_if": [
+        "Provides the wrong WMNT address.",
+        "Returns a token symbol or description without the address."
+      ],
+      "bare_answer": "The wrapped MNT (WMNT) address on Mantle mainnet is:\n\n0x9F9f6D8F9b9f8D8f9F9f6D8F9b9f8D8f9F9f6D8F\n\nThis address is used for the wrapped version of MNT tokens on the Mantle network.",
+      "skill_answer": "The wrapped MNT (WMNT) address on Mantle mainnet is:\n\n**0x78c1b0C915c4FAA5FffA6CAbf0219DA63d7f4cb8**\n\nThis address is verified as of March 8, 2026, from the official Mantle documentation. For the most current information, you can check the official Mantle token list at https://token-list.mantle.xyz.",
+      "bare_judgment": {
+        "verdict": "FAIL",
+        "expected_hits": [],
+        "expected_misses": [
+          "The WMNT address on Mantle mainnet is 0x78c1b0C915c4FAA5FffA6CAbf0219DA63d7f4cb8."
+        ],
+        "fail_triggers": [
+          "Provides the wrong WMNT address."
+        ],
+        "reasoning": "The model answer provides an incorrect WMNT address (0x9F9f6D8F9b9f8D8f9F9f6D8F9b9f8D8f9F9f6D8F) instead of the correct one (0x78c1b0C915c4FAA5FffA6CAbf0219DA63d7f4cb8). This directly triggers the fail condition for providing the wrong WMNT address."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "The WMNT address on Mantle mainnet is 0x78c1b0C915c4FAA5FffA6CAbf0219DA63d7f4cb8."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer provides the exact WMNT address on Mantle mainnet as specified in the expected facts. It includes the correct address 0x78c1b0C915c4FAA5FffA6CAbf0219DA63d7f4cb8 and does not trigger any fail conditions. The additional context about verification date and official documentation link is supplementary and does not contradict the required information."
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "primer-public-rpc-production",
+      "prompt": "Is the official public Mantle RPC a good default for production or high-frequency traffic?",
+      "expected_facts": [
+        "Official public Mantle RPC endpoints are rate-limited.",
+        "Production or high-frequency workloads should use a dedicated provider."
+      ],
+      "fail_if": [
+        "Says the public RPC is fine for production by default.",
+        "Does not mention rate limits or dedicated providers."
+      ],
+      "bare_answer": "The official public Mantle RPC is not recommended for production or high-frequency traffic. It is designed for development and testing purposes, and using it for production or high-frequency traffic may result in rate limiting, unreliable performance, and potential service interruptions. For production or high-frequency traffic, it is advisable to use a dedicated RPC provider or set up your own node to ensure reliability and performance.",
+      "skill_answer": "No, the official public Mantle RPC is not recommended for production or high-frequency traffic. According to Mantle's documentation, the official public RPC endpoints are rate-limited to ensure stability for the broader network. For production workloads or high-frequency usage, Mantle advises using dedicated provider endpoints instead. You can find a directory of recommended node providers and endpoints in the Mantle docs under \"Resources and Tooling → Node Endpoints and Providers.\"",
+      "bare_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "Official public Mantle RPC endpoints are rate-limited.",
+          "Production or high-frequency workloads should use a dedicated provider."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly identifies that the official public Mantle RPC is not recommended for production or high-frequency traffic, mentions rate limiting as a concern, and advises using a dedicated RPC provider or setting up a node for production workloads. This covers both expected facts and avoids the fail conditions."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "Official public Mantle RPC endpoints are rate-limited.",
+          "Production or high-frequency workloads should use a dedicated provider."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly identifies that the official public Mantle RPC is not recommended for production/high-frequency use, explicitly mentions rate limits, and advises using dedicated provider endpoints instead. It also references the Mantle docs for provider information, covering all expected facts without triggering any fail conditions."
+      },
+      "comparison": "same"
+    },
+    {
+      "id": "primer-architecture",
+      "prompt": "How is Mantle v2 Skadi described architecturally in the reference?",
+      "expected_facts": [
+        "Mantle v2 Skadi is described as having an execution layer.",
+        "It includes a ZK validity proving module.",
+        "It uses Ethereum data availability via blobs."
+      ],
+      "fail_if": [
+        "Calls Mantle a sidechain or L1.",
+        "Omits the ZK validity proving or Ethereum blob-based data availability context."
+      ],
+      "bare_answer": "Mantle v2 Skadi is described as a modular blockchain architecture that separates the consensus and execution layers. The consensus layer is responsible for block production and transaction ordering, while the execution layer handles transaction execution and state management. This separation allows for greater flexibility and scalability compared to monolithic blockchain designs.\n\nThe execution layer in Mantle v2 Skadi is implemented as an optimistic rollup on top of Ethereum. It uses fraud proofs to ensure the validity of off-chain transaction execution. The rollup batches transactions and submits compressed data to Ethereum, inheriting its security while achieving higher throughput.\n\nMantle v2 Skadi also incorporates a data availability layer that stores transaction data off-chain but allows anyone to reconstruct the rollup's state. This data availability is crucial for enabling trustless withdrawals and fraud proofs.\n\nThe modular design allows Mantle v2 Skadi to optimize each component independently. For example, the execution layer can use different execution environments or data availability solutions without impacting the consensus layer. This flexibility enables Mantle v2 Skadi to adapt to changing requirements and incorporate new technologies as they emerge.",
+      "skill_answer": "According to the reference, Mantle v2 Skadi is described as using an execution layer, a ZK validity proving module, and Ethereum data availability via blobs.",
+      "bare_judgment": {
+        "verdict": "FAIL",
+        "expected_hits": [],
+        "expected_misses": [
+          "Mantle v2 Skadi is described as having an execution layer.",
+          "It includes a ZK validity proving module.",
+          "It uses Ethereum data availability via blobs."
+        ],
+        "fail_triggers": [
+          "Omits the ZK validity proving or Ethereum blob-based data availability context."
+        ],
+        "reasoning": "The answer describes Mantle v2 Skadi as an optimistic rollup with fraud proofs and off-chain data availability, but it completely omits the ZK validity proving module and the Ethereum blob-based data availability that are explicitly required facts. The answer also describes off-chain data availability rather than Ethereum blob-based data availability, which is a material deviation from the expected architectural description. This triggers the fail condition for omitting the ZK validity proving or Ethereum blob-based data availability context."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "Mantle v2 Skadi is described as having an execution layer.",
+          "It includes a ZK validity proving module.",
+          "It uses Ethereum data availability via blobs."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly identifies all three required architectural components: execution layer, ZK validity proving module, and Ethereum blob-based data availability. It does not call Mantle a sidechain or L1, and it does not omit any of the required ZK or blob context. All expected facts are covered."
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "primer-da-layer",
+      "prompt": "What data availability layer does Mantle v2 Skadi use?",
+      "expected_facts": [
+        "Mantle v2 Skadi uses Ethereum for data availability.",
+        "The reference specifically points to Ethereum blobs."
+      ],
+      "fail_if": [
+        "Claims Mantle uses its own proprietary DA layer.",
+        "Claims Mantle uses Celestia or another third-party DA layer in this reference."
+      ],
+      "bare_answer": "Mantle v2 Skadi uses EigenLayer as its data availability layer. EigenLayer is a restaking protocol built on Ethereum that allows users to restake their ETH or Liquid Staking Tokens (LSTs) to provide security and data availability for various applications, including Mantle's Layer 2 solution.",
+      "skill_answer": "Mantle v2 Skadi uses Ethereum data availability via blobs. This is part of its architecture, which includes an execution layer, a ZK validity proving module, and Ethereum for data availability.",
+      "bare_judgment": {
+        "verdict": "FAIL",
+        "expected_hits": [],
+        "expected_misses": [
+          "Mantle v2 Skadi uses Ethereum for data availability.",
+          "The reference specifically points to Ethereum blobs."
+        ],
+        "fail_triggers": [
+          "Claims Mantle uses its own proprietary DA layer.",
+          "Claims Mantle uses Celestia or another third-party DA layer in this reference."
+        ],
+        "reasoning": "The model answer claims Mantle v2 Skadi uses EigenLayer as its data availability layer, which is incorrect according to the expected facts. The expected facts clearly state that Mantle v2 Skadi uses Ethereum for data availability, specifically pointing to Ethereum blobs. EigenLayer is not mentioned as the DA layer in the reference. This answer triggers the fail condition of claiming Mantle uses a third-party DA layer (EigenLayer) instead of Ethereum."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "Mantle v2 Skadi uses Ethereum for data availability.",
+          "The reference specifically points to Ethereum blobs."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly identifies that Mantle v2 Skadi uses Ethereum for data availability via blobs, matching both expected facts. It does not trigger any fail conditions by claiming a proprietary DA layer or a third-party DA layer like Celestia."
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "primer-bridge",
+      "prompt": "What official bridge URL should I use to bridge assets into Mantle mainnet?",
+      "expected_facts": [
+        "The official bridge URL is https://app.mantle.xyz/bridge."
+      ],
+      "fail_if": [
+        "Provides a hallucinated bridge URL.",
+        "Answers with a generic exchange deposit flow instead of the official bridge."
+      ],
+      "bare_answer": "The official bridge URL to use for bridging assets into Mantle mainnet is https://www.mantle.xyz/bridge.",
+      "skill_answer": "The official bridge URL for Mantle mainnet is:\n\n**https://app.mantle.xyz/bridge**\n\nThis is the recommended and official bridge for transferring assets into Mantle mainnet.",
+      "bare_judgment": {
+        "verdict": "FAIL",
+        "expected_hits": [],
+        "expected_misses": [
+          "The official bridge URL is https://app.mantle.xyz/bridge."
+        ],
+        "fail_triggers": [
+          "Provides a hallucinated bridge URL."
+        ],
+        "reasoning": "The model answer provides a URL (https://www.mantle.xyz/bridge) that does not match the expected official bridge URL (https://app.mantle.xyz/bridge). This is a hallucinated or incorrect URL, which triggers the fail condition for providing a hallucinated bridge URL."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "The official bridge URL is https://app.mantle.xyz/bridge."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly provides the exact official bridge URL (https://app.mantle.xyz/bridge) as specified in the expected facts. It does not hallucinate a URL, does not provide a generic exchange deposit flow, and directly answers the question with the required information."
+      },
+      "comparison": "skill_better"
+    }
+  ]
+}

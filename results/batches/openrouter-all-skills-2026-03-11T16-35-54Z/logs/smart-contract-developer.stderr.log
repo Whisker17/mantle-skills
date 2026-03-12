@@ -1,0 +1,13 @@
+Running 6 eval(s) for smart-contract-developer with openrouter/arcee-ai/trinity-large-preview:free (judge: openrouter/arcee-ai/trinity-large-preview:free)
+[1/6] dev-gas-token-check bare=FAIL skill=PASS (skill_better)
+[2/6] dev-solidity-version bare=PARTIAL skill=PASS (skill_better)
+[3/6] dev-oz-handoff bare=FAIL skill=PASS (skill_better)
+[4/6] dev-address-verification bare=PARTIAL skill=PASS (skill_better)
+[5/6] dev-upgradeability bare=PASS skill=PASS (same)
+[6/6] dev-mantle-specific-checks bare=FAIL skill=PASS (skill_better)
+
+Summary:
+  bare  PASS/PARTIAL/FAIL: 1/2/3
+  skill PASS/PARTIAL/FAIL: 6/0/0
+  comparison skill_better/same/bare_better: 5/1/0
+Results written to /Users/whisker/Work/src/Whisker17/agents/mantle-skills/results/batches/openrouter-all-skills-2026-03-11T16-35-54Z/smart-contract-developer.json

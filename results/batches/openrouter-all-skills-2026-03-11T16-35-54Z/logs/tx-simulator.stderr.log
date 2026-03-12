@@ -1,0 +1,13 @@
+Running 6 eval(s) for tx-simulator with openrouter/arcee-ai/trinity-large-preview:free (judge: openrouter/arcee-ai/trinity-large-preview:free)
+[1/6] sim-mcp-capability bare=PASS skill=PASS (same)
+[2/6] sim-backends bare=FAIL skill=PASS (skill_better)
+[3/6] sim-inconclusive bare=PARTIAL skill=PASS (skill_better)
+[4/6] sim-wysiwys bare=FAIL skill=PASS (skill_better)
+[5/6] sim-revert-analysis bare=FAIL skill=PASS (skill_better)
+[6/6] sim-pre-signing bare=PASS skill=PASS (same)
+
+Summary:
+  bare  PASS/PARTIAL/FAIL: 2/1/3
+  skill PASS/PARTIAL/FAIL: 6/0/0
+  comparison skill_better/same/bare_better: 4/2/0
+Results written to /Users/whisker/Work/src/Whisker17/agents/mantle-skills/results/batches/openrouter-all-skills-2026-03-11T16-35-54Z/tx-simulator.json

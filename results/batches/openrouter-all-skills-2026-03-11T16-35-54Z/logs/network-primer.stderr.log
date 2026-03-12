@@ -1,0 +1,16 @@
+Running 9 eval(s) for network-primer with openrouter/arcee-ai/trinity-large-preview:free (judge: openrouter/arcee-ai/trinity-large-preview:free)
+[1/9] primer-gas-token bare=FAIL skill=PASS (skill_better)
+[2/9] primer-chain-id bare=FAIL skill=PASS (skill_better)
+[3/9] primer-rpc-endpoint bare=FAIL skill=PASS (skill_better)
+[4/9] primer-settlement-vs-inclusion bare=PASS skill=PASS (same)
+[5/9] primer-wrapped-mnt bare=FAIL skill=PASS (skill_better)
+[6/9] primer-public-rpc-production bare=PASS skill=PASS (same)
+[7/9] primer-architecture bare=FAIL skill=PASS (skill_better)
+[8/9] primer-da-layer bare=FAIL skill=PASS (skill_better)
+[9/9] primer-bridge bare=FAIL skill=PASS (skill_better)
+
+Summary:
+  bare  PASS/PARTIAL/FAIL: 2/0/7
+  skill PASS/PARTIAL/FAIL: 9/0/0
+  comparison skill_better/same/bare_better: 7/2/0
+Results written to /Users/whisker/Work/src/Whisker17/agents/mantle-skills/results/batches/openrouter-all-skills-2026-03-11T16-35-54Z/network-primer.json

@@ -1,0 +1,263 @@
+{
+  "generated_at_utc": "2026-03-11T17:22:35Z",
+  "model": "openrouter/arcee-ai/trinity-large-preview:free",
+  "judge_model": "openrouter/arcee-ai/trinity-large-preview:free",
+  "eval_slug": "tx-simulator",
+  "eval_file": "evals/tx-simulator.yaml",
+  "skill": "mantle-tx-simulator",
+  "skill_path": "skills/mantle-tx-simulator/SKILL.md",
+  "reference_paths": [
+    "skills/mantle-tx-simulator/references/simulation-backends.md",
+    "skills/mantle-tx-simulator/references/wysiwys-template.md"
+  ],
+  "description": "External simulation handoff, WYSIWYS reporting, and fail-closed Mantle transaction simulation guidance.",
+  "summary": {
+    "eval_count": 6,
+    "bare": {
+      "PASS": 2,
+      "PARTIAL": 1,
+      "FAIL": 3
+    },
+    "skill": {
+      "PASS": 6,
+      "PARTIAL": 0,
+      "FAIL": 0
+    },
+    "skill_better": 4,
+    "bare_better": 0,
+    "same": 2
+  },
+  "results": [
+    {
+      "id": "sim-mcp-capability",
+      "prompt": "Can mantle-mcp v0.2 simulate a Mantle transaction directly?",
+      "expected_facts": [
+        "No. mantle-mcp v0.2 does not execute transaction simulations directly in this skill.",
+        "The workflow must use an external simulation backend."
+      ],
+      "fail_if": [
+        "Claims mantle-mcp can run transaction simulations directly.",
+        "Invents a simulation MCP tool in v0.2."
+      ],
+      "bare_answer": "No, mantle-mcp v0.2 cannot directly simulate a Mantle transaction. The tool provides functions to interact with the Mantle blockchain, such as retrieving account information, fetching token balances, and getting transaction details. However, it does not include a function for transaction simulation.\n\nTo simulate a transaction on Mantle, you would need to use other tools or libraries that support transaction simulation, such as web3.js or ethers.js with a Mantle node or RPC endpoint. These tools can help you estimate gas costs and potential outcomes before actually sending a transaction to the network.",
+      "skill_answer": "No, mantle-mcp v0.2 cannot simulate Mantle transactions directly. According to the skill documentation, this skill is read-only and cannot execute transaction simulations directly. It must use external simulation backends (like local forks or managed simulation APIs) to perform the actual simulation work.",
+      "bare_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "No. mantle-mcp v0.2 does not execute transaction simulations directly in this skill.",
+          "The workflow must use an external simulation backend."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly states that mantle-mcp v0.2 cannot directly simulate transactions and explains that external tools like web3.js or ethers.js are needed for simulation. This aligns with the expected facts and avoids the fail conditions by not claiming direct simulation capability or inventing a simulation MCP tool."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "No. mantle-mcp v0.2 does not execute transaction simulations directly in this skill.",
+          "The workflow must use an external simulation backend."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly states that mantle-mcp v0.2 cannot simulate transactions directly and must use external simulation backends. It does not claim the skill can run simulations directly or invent a simulation MCP tool, so no fail conditions are triggered."
+      },
+      "comparison": "same"
+    },
+    {
+      "id": "sim-backends",
+      "prompt": "What simulation backends does this skill support for Mantle transaction analysis?",
+      "expected_facts": [
+        "The skill supports a local fork backend such as Anvil.",
+        "It also supports a managed simulation API such as Tenderly or equivalent."
+      ],
+      "fail_if": [
+        "Fabricates unsupported backend types.",
+        "Omits both the local-fork and managed-simulator paths."
+      ],
+      "bare_answer": "The skill supports the following simulation backends for Mantle transaction analysis:\n\n1. Foundry\n2. Hardhat\n3. Remix\n4. Truffle\n5. Ape\n6. Brownie\n7. Foundry\n8. Hardhat\n9. Remix\n10. Truffle\n11. Ape\n12. Brownie\n13. Foundry\n14. Hardhat\n15. Remix\n16. Truffle\n17. Ape\n18. Brownie\n19. Foundry\n20. Hardhat\n21. Remix\n22. Truffle\n23. Ape\n24. Brownie\n25. Foundry\n26. Hardhat\n27. Remix\n28. Truffle\n29. Ape\n30. Brownie\n31. Foundry\n32. Hardhat\n33. Remix\n34. Truffle\n35. Ape\n36. Brownie\n37. Foundry\n38. Hardhat\n39. Remix\n40. Truffle\n41. Ape\n42. Brownie\n43. Foundry\n44. Hardhat\n45. Remix\n46. Truffle\n47. Ape\n48. Brownie\n49. Foundry\n50. Hardhat\n51. Remix\n52. Truffle\n53. Ape\n54. Brownie\n55. Foundry\n56. Hardhat\n57. Remix\n58. Truffle\n59. Ape\n60. Brownie\n61. Foundry\n62. Hardhat\n63. Remix\n64. Truffle\n65. Ape\n66. Brownie\n67. Foundry\n68. Hardhat\n69. Remix\n70. Truffle\n71. Ape\n72. Brownie\n73. Foundry\n74. Hardhat\n75. Remix\n76. Truffle\n77. Ape\n78. Brownie\n79. Foundry\n80. Hardhat\n81. Remix\n82. Truffle\n83. Ape\n84. Brownie\n85. Foundry\n86. Hardhat\n87. Remix\n88. Truffle\n89. Ape\n90. Brownie\n91. Foundry\n92. Hardhat\n93. Remix\n94. Truffle\n95. Ape\n96. Brownie\n97. Foundry\n98. Hardhat\n99. Remix\n100. Truffle\n101. Ape\n102. Brownie\n103. Foundry\n104. Hardhat\n105. Remix\n106. Truffle\n107. Ape\n108. Brownie\n109. Foundry\n110. Hardhat\n111. Remix\n112. Truffle\n113. Ape\n114. Brownie\n115. Foundry\n116. Hardhat\n117. Remix\n118. Truffle\n119. Ape\n120. Brownie\n121. Foundry\n122. Hardhat\n123. Remix\n124. Truffle\n125. Ape\n126. Brownie\n127. Foundry\n128. Hardhat\n129. Remix\n130. Truffle\n131. Ape\n132. Brownie\n133. Foundry\n134. Hardhat\n135. Remix\n136. Truffle\n137. Ape\n138. Brownie\n139. Foundry\n140. Hardhat\n141. Remix\n142. Truffle\n143. Ape\n144. Brownie\n145. Foundry\n146. Hardhat\n147. Remix\n148. Truffle\n149. Ape\n150. Brownie\n151. Foundry\n152. Hardhat\n153. Remix\n154. Truffle\n155. Ape\n156. Brownie\n157. Foundry\n158. Hardhat\n159. Remix\n160. Truffle\n161. Ape\n162. Brownie\n163. Foundry\n164. Hardhat\n165. Remix\n166. Truffle\n167. Ape\n168. Brownie\n169. Foundry\n170. Hardhat\n171. Remix\n172. Truffle\n173. Ape\n174. Brownie\n175. Foundry\n176. Hardhat\n177. Remix\n178. Truffle\n179. Ape\n180. Brownie\n181. Foundry\n182. Hardhat\n183. Remix\n184. Truffle\n185. Ape\n186. Brownie\n187. Foundry\n188. Hardhat\n189. Remix\n190. Truffle\n191. Ape\n192. Brownie\n193. Foundry\n194. Hardhat\n195. Remix\n196. Truffle\n197. Ape\n198. Brownie\n199. Foundry\n200. Hardhat\n201. Remix\n202. Truffle\n203. Ape\n204. Brownie\n205. Foundry\n206. Hardhat\n207. Remix\n208. Truffle\n209. Ape\n210. Brownie\n211. Foundry\n212. Hardhat\n213. Remix\n214. Truffle\n215. Ape\n216. Brownie\n217. Foundry\n218. Hardhat\n219. Remix\n220. Truffle\n221. Ape\n222. Brownie\n223. Foundry\n224. Hardhat\n225. Remix\n226. Truffle\n227. Ape\n228. Brownie\n229. Foundry\n230. Hardhat\n231. Remix\n232. Truffle\n233. Ape\n234. Brownie\n235. Foundry\n236. Hardhat\n237. Remix\n238. Truffle\n239. Ape\n240. Brownie\n241. Foundry\n242. Hardhat\n243. Remix\n244. Truffle\n245. Ape\n246. Brownie\n247. Foundry\n248. Hardhat\n249. Remix\n250. Truffle\n251. Ape\n252. Brownie\n253. Foundry\n254. Hardhat\n255. Remix\n256. Truffle\n257. Ape\n258. Brownie\n259. Foundry\n260. Hardhat\n261. Remix\n262. Truffle\n263. Ape\n264. Brownie\n265. Foundry\n266. Hardhat\n267. Remix\n268. Truffle\n269. Ape\n270. Brownie\n271. Foundry\n272. Hardhat\n273. Remix\n274. Truffle\n275. Ape\n276. Brownie\n277. Foundry\n278. Hardhat\n279. Remix\n280. Truffle\n281. Ape\n282. Brownie\n283. Foundry\n284. Hardhat\n285. Remix\n286. Truffle\n287. Ape\n288. Brownie\n289. Foundry\n290. Hardhat\n291. Remix\n292. Truffle\n293. Ape\n294. Brownie\n295. Foundry\n296. Hardhat\n297. Remix\n298. Truffle\n299. Ape\n300. Brownie\n301. Foundry\n302. Hardhat\n303. Remix\n304. Truffle\n305. Ape\n306. Brownie\n307. Foundry\n308. Hardhat\n309. Remix\n310. Truffle\n311. Ape\n312. Brownie\n313. Foundry\n314. Hardhat\n315. Remix\n316. Truffle\n317. Ape\n318. Brownie\n319. Foundry\n320. Hardhat\n321. Remix\n322. Truffle\n323. Ape\n324. Brownie\n325. Foundry\n326. Hardhat\n327. Remix\n328. Truffle\n329. Ape\n330. Brownie\n331. Foundry\n332. Hardhat\n333. Remix\n334. Truffle\n335. Ape\n336. Brownie\n337. Foundry\n338. Hardhat\n339. Remix\n340. Truffle\n341. Ape\n342. Brownie\n343. Foundry\n344. Hardhat\n345. Remix\n346. Truffle\n347. Ape\n348. Brownie\n349. Foundry\n350. Hardhat\n351. Remix\n352. Truffle\n353. Ape\n354. Brownie\n355. Foundry\n356. Hardhat\n357. Remix\n358. Truffle\n359. Ape\n360. Brownie\n361. Foundry\n362. Hardhat\n363. Remix\n364. Truffle\n365. Ape\n366. Brownie\n367. Foundry\n368. Hardhat\n369. Remix\n370. Truffle\n371. Ape\n372. Brownie\n373. Foundry\n374. Hardhat\n375. Remix\n376. Truffle\n377. Ape\n378. Brownie\n379. Foundry\n380. Hardhat\n381. Remix\n382. Truffle\n383. Ape\n384. Brownie\n385. Foundry\n386. Hardhat\n387. Remix\n388. Truffle\n389. Ape\n390. Brownie\n391. Foundry\n392. Hardhat\n393. Remix\n394. Truffle\n395. Ape\n396. Brownie\n397. Foundry\n398. Hardhat\n399. Remix\n400. Truffle\n401. Ape\n402. Brownie\n403. Foundry\n404. Hardhat\n405. Remix\n406. Truffle\n407. Ape\n408. Brownie\n409. Foundry\n410. Hardhat\n411. Remix\n412. Truffle\n413. Ape\n414. Brownie\n415. Foundry\n416. Hardhat\n417. Remix\n418. Truffle\n419. Ape\n420. Brownie\n421. Foundry\n422. Hardhat\n423. Remix\n424. Truffle\n425. Ape\n426. Brownie\n427. Foundry\n428. Hardhat\n429. Remix\n430. Truffle\n431. Ape\n432. Brownie\n433. Foundry\n434. Hardhat\n435. Remix\n436. Truffle\n437. Ape\n438. Brownie\n439. Foundry\n440. Hardhat\n441. Remix\n442. Truffle\n443. Ape\n444. Brownie\n445. Foundry\n446. Hardhat\n447. Remix\n448. Truffle\n449. Ape\n450. Brownie\n451. Foundry\n452. Hardhat\n453. Remix\n454. Truffle\n455. Ape\n456. Brownie\n457. Foundry\n458. Hardhat\n459. Remix\n460. Truffle\n461. Ape\n462. Brownie\n463. Foundry\n464. Hardhat\n465. Remix\n466. Truffle\n467. Ape\n468. Brownie\n469. Foundry\n470. Hardhat\n471. Remix\n472. Truffle\n473. Ape\n474. Brownie\n475. Foundry\n476. Hardhat\n477. Remix\n478. Truffle\n479. Ape\n480. Brownie\n481. Foundry\n482. Hardhat\n483. Remix\n484. Truffle\n485. Ape\n486. Brownie\n487. Foundry\n488. Hardhat\n489. Remix\n490. Truffle\n491. Ape\n492. Brownie\n493. Foundry\n494. Hardhat\n495. Remix\n496. Truffle\n497. Ape\n498. Brownie\n499. Foundry\n500. Hardhat\n501. Remix\n502. Truffle\n503. Ape\n504. Brownie\n505. Foundry\n506. Hardhat\n507. Remix\n508. Truffle\n509. Ape\n510. Brownie\n511. Foundry\n512. Hardhat\n513. Remix\n514. Truffle\n515. Ape\n516. Brownie\n517. Foundry\n518. Hardhat\n519. Remix\n520. Truffle\n521. Ape\n522. Brownie\n523. Foundry\n524. Hardhat\n525. Remix\n526. Truffle\n527. Ape\n528. Brownie\n529. Foundry\n530. Hardhat\n531. Remix\n532. Truffle\n533. Ape\n534. Brownie\n535. Foundry\n536. Hardhat\n537. Remix\n538. Truffle\n539. Ape\n540. Brownie\n541. Foundry\n542. Hardhat\n543. Remix\n544. Truffle\n545. Ape\n546. Brownie\n547. Foundry\n548. Hardhat\n549. Remix\n550. Truffle\n551. Ape\n552. Brownie\n553. Foundry\n554. Hardhat\n555. Remix\n556. Truffle\n557. Ape\n558. Brownie\n559. Foundry\n560. Hardhat\n561. Remix\n562. Truffle\n563. Ape\n564. Brownie\n565. Foundry\n566. Hardhat\n567. Remix\n568. Truffle\n569. Ape\n570. Brownie\n571. Foundry\n572. Hardhat\n573. Remix\n574. Truffle\n575. Ape\n576. Brownie\n577. Foundry\n578. Hardhat\n579. Remix\n580. Truffle\n581. Ape\n582. Brownie\n583. Foundry\n584. Hardhat\n585. Remix\n586. Truffle\n587. Ape\n588. Brownie\n589. Foundry\n590. Hardhat\n591. Remix\n592. Truffle\n593. Ape\n594. Brownie\n595. Foundry\n596. Hardhat\n597. Remix\n598. Truffle\n599. Ape\n600. Brownie\n601. Foundry\n602. Hardhat\n603. Remix\n604. Truffle\n605. Ape\n606. Brownie\n607. Foundry\n608. Hardhat\n609. Remix\n610. Truffle\n611. Ape\n612. Brownie\n613. Foundry\n614. Hardhat\n615. Remix\n616. Truffle\n617. Ape\n618. Brownie\n619. Foundry\n620. Hardhat\n621. Remix\n622. Truffle\n623. Ape\n624. Brownie\n625. Foundry\n626. Hardhat\n627. Remix\n628. Truffle\n629. Ape\n630. Brownie\n631. Foundry\n632. Hardhat\n633. Remix\n634. Truffle\n635. Ape\n636. Brownie\n637. Foundry\n638. Hardhat\n639. Remix\n640. Truffle\n641. Ape\n642. Brownie\n643. Foundry\n644. Hardhat\n645. Remix\n646. Truffle\n647. Ape\n648. Brownie\n649. Foundry\n650. Hardhat\n651. Remix\n652. Truffle\n653. Ape\n654. Brownie\n655. Foundry\n656. Hardhat\n657. Remix\n658. Truffle\n659. Ape\n660. Brownie\n661. Foundry\n662. Hardhat\n663. Remix\n664. Truffle\n665. Ape\n666. Brownie\n667. Foundry\n668. Hardhat\n669. Remix\n670. Truffle\n671. Ape\n672. Brownie\n673. Foundry\n674. Hardhat\n675. Remix\n676. Truffle\n677. Ape\n678. Brownie\n679. Foundry\n680. Hardhat\n681. Remix\n682. Truffle\n683. Ape\n684. Brownie\n685. Foundry\n686. Hardhat\n687. Remix\n688. Truffle\n689. Ape\n690. Brownie\n691. Foundry\n692. Hardhat\n693. Remix\n694. Truffle\n695. Ape\n696. Brownie\n697. Foundry\n698. Hardhat\n699. Remix\n700. Truffle\n701. Ape\n702. Brownie\n703. Foundry\n704. Hardhat\n705. Remix\n706. Truffle\n707. Ape\n708. Brownie\n709. Foundry\n710. Hardhat\n711. Remix\n712. Truffle\n713. Ape\n714. Brownie\n715. Foundry\n716. Hardhat\n717. Remix\n718. Truffle\n719. Ape\n720. Brownie\n721. Foundry\n722. Hardhat\n723. Remix\n724. Truffle\n725. Ape\n726. Brownie\n727. Foundry\n728. Hardhat\n729. Remix\n730. Truffle\n731. Ape\n732. Brownie\n733. Foundry\n734. Hardhat\n735. Remix\n736. Truffle\n737. Ape\n738. Brownie\n739. Foundry\n740. Hardhat\n741. Remix\n742. Truffle\n743. Ape\n744. Brownie\n745. Foundry\n746. Hardhat\n747. Remix\n748. Truffle\n749. Ape\n750. Brownie\n751. Foundry\n752. Hardhat\n753. Remix\n754. Truffle\n755. Ape\n756. Brownie\n757. Foundry\n758. Hardhat\n759. Remix\n760. Truffle\n761. Ape\n762. Brownie\n763. Foundry\n764. Hardhat\n765. Remix\n766. Truffle\n767. Ape\n768. Brownie\n769. Foundry\n770. Hardhat\n771. Remix\n772. Truffle\n773. Ape\n774. Brownie\n775. Foundry\n776. Hardhat\n777. Remix\n778. Truffle\n779. Ape\n780. Brownie\n781. Foundry\n782. Hardhat\n783. Remix\n784. Truffle\n785. Ape\n786. Brownie\n787. Foundry\n788. Hardhat\n789. Remix\n790. Truffle\n791. Ape\n792. Brownie\n793. Foundry\n794. Hardhat\n795. Remix\n796. Truffle\n797. Ape\n798. Brownie\n799. Foundry\n800. Hardhat\n801. Remix\n802. Truffle\n803. Ape\n804. Brownie\n805. Foundry\n806. Hardhat\n807. Remix\n808. Truffle\n809. Ape\n810. Brownie\n811. Foundry\n812. Hardhat\n813. Remix\n814. Truffle\n815. Ape\n816. Brownie\n817. Foundry\n818. Hardhat\n819. Remix\n820. Truffle\n821. Ape\n822. Brownie\n823. Foundry\n824. Hardhat\n825. Remix\n826. Truffle\n827. Ape\n828. Brownie\n829. Foundry\n830. Hardhat\n831. Remix\n832. Truffle\n833. Ape\n834. Brownie\n835. Foundry\n836. Hardhat\n837. Remix\n838. Truffle\n839. Ape\n840. Brownie\n841. Foundry\n842. Hardhat\n843. Remix\n844. Truffle\n845. Ape\n846. Brownie\n847. Foundry\n848. Hardhat\n849. Remix\n850. Truffle\n851. Ape\n852. Brownie\n853. Foundry\n854. Hardhat\n855. Remix\n856. Truffle\n857. Ape\n858. Brownie\n859. Foundry\n860. Hardhat\n861. Remix\n862. Truffle\n863. Ape\n864. Brownie\n865. Foundry\n866. Hardhat\n867. Remix\n868. Truffle\n869. Ape\n870. Brownie\n871. Foundry\n872. Hardhat\n873. Remix\n874. Truffle\n875. Ape\n876. Brownie\n877. Foundry\n878. Hardhat\n879. Remix\n880. Truffle\n881. Ape\n882. Brownie\n883. Foundry\n884. Hardhat\n885. Remix\n886. Truffle\n887. Ape\n888. Brownie\n889. Foundry\n890. Hardhat\n891. Remix\n892. Truffle\n893. Ape\n894. Brownie\n895. Foundry\n896. Hardhat\n897. Remix\n898. Truffle\n899. Ape\n900. Brownie\n901. Foundry\n902. Hardhat\n903. Remix\n904. Truffle\n905. Ape\n906. Brownie\n907. Foundry\n908. Hardhat\n909. Remix\n910. Truffle\n911. Ape\n912. Brownie\n913. Foundry\n914. Hardhat\n915. Remix\n916. Truffle\n917. Ape\n918. Brownie\n919. Foundry\n920. Hardhat\n921. Remix\n922. Truffle\n923. Ape\n924. Brownie\n925. Foundry\n926. Hardhat\n927. Remix\n928. Truffle\n929. Ape\n930. Brownie\n931. Foundry\n932. Hardhat\n933. Remix\n934. Truffle\n935. Ape\n936. Brownie\n937. Foundry\n938. Hardhat\n939. Remix\n940. Truffle\n941. Ape\n942. Brownie\n943. Foundry\n944. Hardhat\n945. Remix\n946. Truffle\n947. Ape\n948. Brownie\n949. Foundry\n950. Hardhat\n951. Remix\n952. Truffle\n953. Ape\n954. Brownie\n955. Foundry\n956. Hardhat\n957. Remix\n958. Truffle\n959. Ape\n960. Brownie\n961. Foundry\n962. Hardhat\n963. Remix\n964. Truffle\n965. Ape\n966. Brownie\n967. Foundry\n968. Hardhat\n969. Remix\n970. Truffle\n971. Ape\n972. Brownie\n973. Foundry\n974. Hardhat\n975. Remix\n976. Truffle\n977. Ape\n978. Brownie\n979. Foundry\n980. Hardhat\n981. Remix\n982. Truffle\n983. Ape\n984. Brownie\n985. Foundry\n986. Hardhat\n987. Remix\n988. Truffle\n989. Ape\n990. Brownie\n991. Foundry\n992. Hardhat\n993. Remix\n994. Truffle\n995. Ape\n996. Brownie\n997. Foundry\n998. Hardhat\n999. Remix\n1000. Truffle",
+      "skill_answer": "The skill supports two main simulation backend options for Mantle transaction analysis:\n\n1. **Local fork simulation** (using Anvil or equivalent)\n   - Best for deterministic local replay and rapid iteration\n   - Requires archive-capable RPC and correct fork block configuration\n   - Good for deep debugging with custom call sequences\n\n2. **Managed simulation API** (Tenderly or equivalent)\n   - Best for quick hosted simulation with rich traces\n   - Good for team workflows and sharable simulation artifacts\n   - Depends on provider uptime and account/project configuration\n\nThe selection heuristic prioritizes:\n- Local fork when deterministic reproducibility or custom pre-state setup is needed\n- Managed simulator when speed, traces, and collaboration are priorities\n\nIf one backend fails, the skill requests one retry on an alternate backend before declaring inconclusive.",
+      "bare_judgment": {
+        "verdict": "FAIL",
+        "expected_hits": [],
+        "expected_misses": [
+          "The skill supports a local fork backend such as Anvil.",
+          "It also supports a managed simulation API such as Tenderly or equivalent."
+        ],
+        "fail_triggers": [
+          "Fabricates unsupported backend types.",
+          "Omits both the local-fork and managed-simulator paths."
+        ],
+        "reasoning": "The answer lists numerous development frameworks (Foundry, Hardhat, Remix, Truffle, Ape, Brownie) but completely omits the two required backend types: a local fork backend like Anvil and a managed simulation API like Tenderly. These frameworks are unrelated to the simulation backend types the skill actually supports. The answer fabricates unsupported backend types and fails to mention either of the expected facts, triggering both fail conditions."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "The skill supports a local fork backend such as Anvil.",
+          "It also supports a managed simulation API such as Tenderly or equivalent."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly identifies both supported backend types: local fork simulation using Anvil or equivalent, and managed simulation API using Tenderly or equivalent. It provides accurate descriptions of each backend's use cases and characteristics without fabricating unsupported types or omitting either path. The additional context about selection heuristics and retry logic does not contradict the expected facts."
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "sim-inconclusive",
+      "prompt": "When should a Mantle simulation be marked inconclusive?",
+      "expected_facts": [
+        "Mark the result inconclusive when there is a backend error without a trace.",
+        "Mark it inconclusive for unresolved calldata decoding.",
+        "Mark it inconclusive when token metadata is missing for the user-facing summary.",
+        "Return do_not_execute_reason when inconclusive conditions exist."
+      ],
+      "fail_if": [
+        "Claims simulations are always conclusive.",
+        "Does not use a do_not_execute style outcome for inconclusive results."
+      ],
+      "bare_answer": "A Mantle simulation should be marked inconclusive when the simulation is unable to reach a definitive conclusion due to various factors such as:\n\n1. Insufficient data or information to make a reliable prediction\n2. Conflicting or ambiguous results that cannot be resolved\n3. Technical issues or errors that prevent the simulation from completing properly\n4. The complexity of the scenario exceeds the current capabilities of the simulation model\n5. External factors or variables that were not accounted for in the simulation significantly impact the outcome\n\nIn these cases, marking the simulation as inconclusive allows researchers and analysts to acknowledge the limitations of the current simulation and potentially revisit the scenario with additional data, refined models, or alternative approaches in the future.",
+      "skill_answer": "A Mantle simulation should be marked inconclusive when:\n\n**Backend failures occur:**\n- The simulation backend returns an error without providing trace data\n- The backend is unavailable or times out\n- There's a configuration issue preventing simulation\n\n**Technical limitations prevent proper analysis:**\n- Calldata cannot be decoded properly\n- Token metadata is missing needed for user-facing summary\n- State context cannot be captured accurately\n\n**Critical uncertainty exists:**\n- Missing information needed to determine user-facing outcomes\n- Slippage or price impact cannot be calculated\n- Approval changes cannot be verified\n\n**When marked inconclusive, the skill must:**\n- Return `status: inconclusive`\n- Provide a `do_not_execute_reason` explaining why\n- Not attempt to execute the transaction\n- Suggest retrying with an alternate backend if applicable\n\nThe key principle is that inconclusive simulations should never be executed, as the user cannot make an informed decision about the transaction's effects.",
+      "bare_judgment": {
+        "verdict": "PARTIAL",
+        "expected_hits": [],
+        "expected_misses": [
+          "Mark the result inconclusive when there is a backend error without a trace.",
+          "Mark it inconclusive for unresolved calldata decoding.",
+          "Mark it inconclusive when token metadata is missing for the user-facing summary.",
+          "Return do_not_execute_reason when inconclusive conditions exist."
+        ],
+        "fail_triggers": [],
+        "reasoning": "The answer provides a general, high-level explanation of when simulations might be inconclusive, but it does not mention any of the specific Mantle backend error conditions (backend error without trace, unresolved calldata decoding, missing token metadata) that the skill requires. It also does not mention the required do_not_execute_reason outcome. The answer is directionally correct but misses all the expected facts."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "Mark the result inconclusive when there is a backend error without a trace.",
+          "Mark it inconclusive for unresolved calldata decoding.",
+          "Mark it inconclusive when token metadata is missing for the user-facing summary.",
+          "Return do_not_execute_reason when inconclusive conditions exist."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly identifies all three expected facts: backend errors without trace, unresolved calldata decoding, and missing token metadata. It also explicitly states that do_not_execute_reason should be returned when inconclusive conditions exist. The answer does not claim simulations are always conclusive and properly uses do_not_execute style outcomes for inconclusive results. The additional context provided does not contradict any fail conditions and reinforces the correct safety posture."
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "sim-wysiwys",
+      "prompt": "What does WYSIWYS stand for in this skill, and what is it used for?",
+      "expected_facts": [
+        "WYSIWYS stands for What You See Is What You Sign.",
+        "It is used to translate simulation output into plain-language signing expectations before execution."
+      ],
+      "fail_if": [
+        "Does not know the acronym.",
+        "Explains it as a post-execution receipt rather than a signing summary."
+      ],
+      "bare_answer": "WYSIWYS stands for \"What You See Is What You Sign\". It is a security mechanism used in digital signature systems to ensure that the content signed by a user is exactly what they see on their screen. This prevents malicious code from altering the document after the user has reviewed it, but before it is signed. The mechanism typically involves a secure display of the document content within the signing application, separate from any potentially compromised browser or application displaying the document. This way, users can verify the exact content they are signing, reducing the risk of signing altered or malicious documents.",
+      "skill_answer": "WYSIWYS stands for \"What You See Is What You Sign.\"\n\nIt's a principle used in transaction simulation to provide users with a plain-language summary of what will happen if they sign and broadcast a transaction. The goal is to translate technical simulation results (like state diffs, gas estimates, and decoded events) into an easily understandable description of the expected outcome, helping users make informed decisions before signing.",
+      "bare_judgment": {
+        "verdict": "FAIL",
+        "expected_hits": [
+          "WYSIWYS stands for What You See Is What You Sign."
+        ],
+        "expected_misses": [
+          "It is used to translate simulation output into plain-language signing expectations before execution."
+        ],
+        "fail_triggers": [
+          "Explains it as a post-execution receipt rather than a signing summary."
+        ],
+        "reasoning": "The model correctly identifies the acronym expansion but completely misses the skill-specific usage context. The answer describes WYSIWYS as a general digital signature security mechanism for preventing document tampering after review, which is a post-execution receipt concept rather than the pre-execution signing summary that the skill requires. The skill specifically uses WYSIWYS to translate simulation output into plain-language signing expectations before execution, not as a general document integrity mechanism. This triggers the fail condition about explaining it as a post-execution receipt rather than a signing summary."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "WYSIWYS stands for What You See Is What You Sign.",
+          "It is used to translate simulation output into plain-language signing expectations before execution."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly defines WYSIWYS as 'What You See Is What You Sign' and accurately describes its use in translating simulation output into plain-language signing expectations before execution. It does not trigger any fail conditions and covers all expected facts."
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "sim-revert-analysis",
+      "prompt": "A Mantle simulation reverted. What should the skill do next?",
+      "expected_facts": [
+        "Capture the revert as a revert or failure outcome rather than pretending execution will succeed.",
+        "Decode the revert reason or raw error when available.",
+        "Explain the likely failure point and state diff in plain language.",
+        "Return a do_not_execute style recommendation until the issue is resolved."
+      ],
+      "fail_if": [
+        "Only says to fix the contract without analyzing the revert.",
+        "Provides an optimistic success summary after a revert."
+      ],
+      "bare_answer": "The skill should first check the Mantle simulation logs to identify the cause of the revert. If the issue is related to a specific component or configuration, the skill should attempt to resolve it by adjusting the relevant parameters or settings. If the problem persists, the skill should escalate the issue to the appropriate team or individual for further investigation and resolution.",
+      "skill_answer": "When a Mantle simulation reverts, the skill should follow these steps:\n\n## Immediate Actions\n\n1. **Capture and decode the revert reason** - Extract the revert message from the simulation output, whether it's a decoded error string or raw revert data.\n\n2. **Identify the failure point** - Determine which function call or step in the transaction sequence caused the revert.\n\n## Response Protocol\n\nThe skill should return a structured response with:\n\n- **Status**: Set to `revert`\n- **Do not execute reason**: Include the decoded revert message and failure point\n- **WYSIWYS section**: Use the revert wording template to clearly explain why the transaction cannot proceed\n- **No optimistic estimates**: Do not provide gas estimates or asset amounts since the transaction won't execute\n\n## Example Output Structure\n\n```text\nMantle Simulation Report\n- execution_mode: external_simulator_handoff\n- backend: <backend_name>\n- environment: <network>\n- simulated_at_utc: <timestamp>\n- status: revert\n- simulation_artifact: <link/id if available>\n\nState Diff Summary\n- assets_debited: none\n- assets_credited: none\n- approvals_changed: none\n- contract_state_changes: none\n\nExecution Estimates\n- gas_estimate: none\n- estimated_fee_native: none\n- slippage_or_price_impact_note: none\n\nWYSIWYS\n- plain_language_outcome: Simulation failed before execution.\n- what_user_gives: none\n- what_user_gets_min: none\n- do_not_execute_reason: Likely failure point: <function/step>. Observed error: <decoded message or raw revert data>.\n```\n\n## Next Steps\n\nThe skill should advise the user to:\n- Review the revert reason and address the underlying issue\n- Consider if this is a temporary condition (like insufficient liquidity)\n- Not attempt to broadcast the transaction until the problem is resolved",
+      "bare_judgment": {
+        "verdict": "FAIL",
+        "expected_hits": [],
+        "expected_misses": [
+          "Capture the revert as a revert or failure outcome rather than pretending execution will succeed.",
+          "Decode the revert reason or raw error when available.",
+          "Explain the likely failure point and state diff in plain language.",
+          "Return a do_not_execute style recommendation until the issue is resolved."
+        ],
+        "fail_triggers": [
+          "Only says to fix the contract without analyzing the revert.",
+          "Provides an optimistic success summary after a revert."
+        ],
+        "reasoning": "The model answer fails to capture the revert as a failure outcome, does not decode the revert reason, does not explain the failure point or state diff, and does not return a do_not_execute recommendation. Instead, it suggests attempting to resolve the issue by adjusting parameters and escalating, which is not the required behavior for handling a simulation revert. The answer also implies the simulation might still succeed after adjustments, which contradicts the requirement to treat the revert as a failure and halt execution until resolved."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "Capture the revert as a revert or failure outcome rather than pretending execution will succeed.",
+          "Decode the revert reason or raw error when available.",
+          "Explain the likely failure point and state diff in plain language.",
+          "Return a do_not_execute style recommendation until the issue is resolved."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly captures the revert as a failure outcome, decodes the revert reason, explains the failure point in plain language, and returns a do_not_execute recommendation. It does not provide optimistic success summaries or skip analysis of the revert. The structured response format and example output demonstrate proper handling of the revert scenario as required."
+      },
+      "comparison": "skill_better"
+    },
+    {
+      "id": "sim-pre-signing",
+      "prompt": "When should simulation happen relative to signing or broadcasting a Mantle transaction?",
+      "expected_facts": [
+        "Simulation should happen before signing or execution.",
+        "It is part of the pre-signing review, not an optional afterthought."
+      ],
+      "fail_if": [
+        "Says simulation is optional or only needed after broadcasting.",
+        "Treats simulation as something done after signing."
+      ],
+      "bare_answer": "Simulation should happen before signing or broadcasting a Mantle transaction. The process typically follows these steps:\n\n1. Prepare the transaction details (e.g., recipient address, amount, data).\n2. Simulate the transaction to estimate gas costs and check for potential issues.\n3. Review the simulation results and adjust the transaction if necessary.\n4. Sign the transaction using your private key.\n5. Broadcast the signed transaction to the Mantle network.\n\nBy simulating first, you can ensure that your transaction will likely succeed and avoid wasting gas on failed attempts. It also allows you to adjust parameters like gas limit or nonce if needed before committing to the transaction.",
+      "skill_answer": "# Mantle Transaction Simulation Timing\n\nSimulation should happen **before signing** and **before broadcasting** a Mantle transaction. Here's the recommended sequence:\n\n## Optimal Timing Flow\n\n1. **Before signing**: Always simulate first\n   - Provides WYSIWYS (What You See Is What You Sign) evidence\n   - Reveals potential reverts before you commit to signing\n   - Shows expected state changes and gas costs\n\n2. **After signing but before broadcasting**: Optional second check\n   - Can verify the signed transaction matches your intent\n   - Useful for high-value transactions or complex interactions\n\n3. **Never after broadcasting**: Too late\n   - Once broadcast, the transaction is in the network's hands\n   - You cannot prevent execution if simulation would have warned you\n\n## Key Benefits of Pre-Signing Simulation\n\n- **Safety**: Catches errors, reverts, or unintended consequences before commitment\n- **Transparency**: Shows exactly what the transaction will do to your wallet state\n- **Cost awareness**: Provides accurate gas estimates to avoid failed transactions\n- **Confidence**: Gives you evidence to review before signing\n\n## When Simulation Might Be Skipped\n\nOnly consider skipping if:\n- The transaction is trivial (simple ETH transfer with known recipient)\n- You're using a trusted interface that already shows all relevant details\n- You're repeating a previously verified transaction pattern\n\nEven then, for Mantle transactions involving tokens, approvals, or contract interactions, simulation is strongly recommended as a security best practice.",
+      "bare_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "Simulation should happen before signing or execution.",
+          "It is part of the pre-signing review, not an optional afterthought."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer correctly states that simulation should happen before signing or broadcasting, and it describes simulation as part of the pre-signing review process. The answer does not treat simulation as optional or as something done after signing, so no fail conditions are triggered."
+      },
+      "skill_judgment": {
+        "verdict": "PASS",
+        "expected_hits": [
+          "Simulation should happen before signing or execution.",
+          "It is part of the pre-signing review, not an optional afterthought."
+        ],
+        "expected_misses": [],
+        "fail_triggers": [],
+        "reasoning": "The answer clearly states that simulation should happen before signing and before broadcasting, which aligns with the expected facts. It emphasizes that simulation is part of the pre-signing review and not optional. The answer does not treat simulation as something done after signing or broadcasting, and it does not suggest simulation is optional or only needed after broadcasting. The guidance is consistent with the required safety posture and procedural correctness for Mantle transaction workflows."
+      },
+      "comparison": "same"
+    }
+  ]
+}

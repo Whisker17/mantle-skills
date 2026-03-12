@@ -1,0 +1,13 @@
+Running 6 eval(s) for data-indexer with openai/gpt-5.2 (judge: openai/gpt-5.2)
+[1/6] indexer-query-types bare=FAIL skill=PASS (skill_better)
+[2/6] indexer-chain-id-sql bare=PASS skill=PASS (same)
+[3/6] indexer-endpoint-fabrication bare=FAIL skill=PASS (skill_better)
+[4/6] indexer-no-data-vs-failure bare=PARTIAL skill=PASS (skill_better)
+[5/6] indexer-wallet-activity bare=FAIL skill=PASS (skill_better)
+[6/6] indexer-pool-volume bare=FAIL skill=PASS (skill_better)
+
+Summary:
+  bare  PASS/PARTIAL/FAIL: 1/1/4
+  skill PASS/PARTIAL/FAIL: 6/0/0
+  comparison skill_better/same/bare_better: 5/1/0
+Results written to /Users/whisker/Work/src/Whisker17/agents/mantle-skills/results/batches/openai-all-skills-2026-03-12T02-12-17Z/data-indexer.json
