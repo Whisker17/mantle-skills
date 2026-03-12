@@ -94,6 +94,60 @@ These skills cover contract planning and deployment handoff across the Mantle co
 - `mantle-network-primer` is intentionally a reference/onboarding skill rather than a pure execution operator
 - `mantle-defi-operator` is intentionally an orchestrator and should rely on supporting evidence from specialized skills instead of re-deriving everything itself
 
+## Evals
+
+This repo includes an in-repo eval suite under `evals/` and `runner/` for measuring whether loading a Mantle skill improves answer quality relative to the bare model.
+
+### Requirements
+
+- `bash`, `curl`, `jq`, and either `yq` or `python3` with PyYAML available
+- one of:
+  - `OPENAI_API_KEY` for `openai/*`
+  - `OPENROUTER_API_KEY` for `openrouter/*`
+- A model string in `provider/model` format such as `openai/gpt-5.2` or `openrouter/openai/gpt-5.2`
+
+### Run an Eval
+
+```bash
+./runner/run.sh --skill network-primer --model openai/gpt-5.2
+```
+
+```bash
+./runner/run.sh --skill network-primer --model openrouter/openai/gpt-5.2
+```
+
+For OpenRouter, the runner also supports:
+
+- `OPENROUTER_BASE_URL` — override the default `https://openrouter.ai/api/v1`
+- `OPENROUTER_BYPASS_PROXY` — `1/true` forces direct connection, `0/false` disables direct-connection bypass
+- `OPENROUTER_HTTP_REFERER` — optional attribution header
+- `OPENROUTER_TITLE` — optional application title header
+
+For OpenAI, you can point at a relay with:
+
+- `OPENAI_BASE_URL` — for example `http://127.0.0.1:4000/v1`
+
+When `https_proxy`/`HTTPS_PROXY` points to a local proxy (for example `127.0.0.1` or `localhost`), the runner automatically bypasses that proxy for OpenRouter requests unless `OPENROUTER_BYPASS_PROXY=0/false` is set.
+
+The runner retries rate-limit responses (`HTTP 429`) with exponential backoff:
+
+- `API_RETRY_MAX_ATTEMPTS` — total attempts including first try (default `3`)
+- `API_RETRY_BASE_DELAY_SECONDS` — base delay in seconds (default `1`, then `2`, `4`, ...)
+
+The runner writes a timestamped JSON report to `results/`. Each report includes:
+
+- bare-model answers and judged verdicts
+- skill-loaded answers and judged verdicts
+- per-eval comparison (`skill_better`, `same`, `bare_better`)
+- summary pass/fail counts for both variants
+
+### Files
+
+- `evals/*.yaml` — per-skill eval definitions
+- `runner/load-skill.sh` — bundles `SKILL.md` plus local references/assets into one prompt context
+- `runner/judge.md` — judge prompt used to grade answers against `expected_facts` and `fail_if`
+- `results/.gitkeep` — keeps the output directory in git while ignoring generated JSON reports
+
 ## Related Docs
 
 - `docs/skills-review-2026-03-08.md` — current review notes, including `mantle-network-primer` positioning
