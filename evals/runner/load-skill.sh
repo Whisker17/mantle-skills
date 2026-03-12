@@ -2,11 +2,11 @@
 set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-REPO_ROOT=$(cd "$SCRIPT_DIR/.." && pwd)
+REPO_ROOT=$(cd "$SCRIPT_DIR/../.." && pwd)
 
 usage() {
   cat <<'EOF'
-Usage: ./runner/load-skill.sh <skill_path> [reference_path...]
+Usage: ./evals/runner/load-skill.sh <skill_path> [reference_path...]
 
 Bundles a repo-local skill file plus any references/assets into a single
 prompt-friendly document with explicit section headers.

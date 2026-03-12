@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-REPO_ROOT=$(cd "$SCRIPT_DIR/../.." && pwd)
+REPO_ROOT=$(cd "$SCRIPT_DIR/../../.." && pwd)
 TMPDIR=$(mktemp -d)
 trap "rm -rf '$TMPDIR'" EXIT
 
@@ -41,7 +41,7 @@ EOF
 chmod +x "$FAKE_RUNNER"
 
 BATCH_HEARTBEAT_SECONDS=0.1 \
-"$REPO_ROOT/runner/run-all-skills.sh" \
+"$REPO_ROOT/evals/runner/run-all-skills.sh" \
   --model openai/gpt-5.2 \
   --label progress-smoke \
   --evals-dir "$EVALS_DIR" \

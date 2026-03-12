@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-REPO_ROOT=$(cd "$SCRIPT_DIR/../.." && pwd)
+REPO_ROOT=$(cd "$SCRIPT_DIR/../../.." && pwd)
 TMPDIR=$(mktemp -d)
 trap "rm -rf '$TMPDIR'" EXIT
 
@@ -57,7 +57,7 @@ jq -n --arg skill "$slug" --arg model "$model" '{
 EOF
 chmod +x "$FAKE_RUNNER"
 
-"$REPO_ROOT/runner/run-all-skills.sh" \
+"$REPO_ROOT/evals/runner/run-all-skills.sh" \
   --model openai/gpt-5.2 \
   --label smoke \
   --evals-dir "$EVALS_DIR" \

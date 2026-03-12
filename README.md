@@ -20,6 +20,7 @@ Each skill lives under `skills/<skill-name>/` and usually includes:
 - `assets/` — machine-readable local data when needed
 
 Supporting docs for design notes, review notes, and skill tests live under `docs/`.
+Eval definitions, runner implementation, and eval outputs live under `evals/`.
 
 ## Skill Categories
 
@@ -96,7 +97,7 @@ These skills cover contract planning and deployment handoff across the Mantle co
 
 ## Evals
 
-This repo includes an in-repo eval suite under `evals/` and `runner/` for measuring whether loading a Mantle skill improves answer quality relative to the bare model.
+This repo includes an in-repo eval suite under `evals/` for measuring whether loading a Mantle skill improves answer quality relative to the bare model.
 
 ### Requirements
 
@@ -109,11 +110,11 @@ This repo includes an in-repo eval suite under `evals/` and `runner/` for measur
 ### Run an Eval
 
 ```bash
-./runner/run.sh --skill network-primer --model openai/gpt-5.2
+./evals/runner/run.sh --skill network-primer --model openai/gpt-5.2
 ```
 
 ```bash
-./runner/run.sh --skill network-primer --model openrouter/openai/gpt-5.2
+./evals/runner/run.sh --skill network-primer --model openrouter/openai/gpt-5.2
 ```
 
 For OpenRouter, the runner also supports:
@@ -122,7 +123,7 @@ For OpenRouter, the runner also supports:
 - `OPENROUTER_HTTP_REFERER` — optional attribution header
 - `OPENROUTER_TITLE` — optional application title header
 
-The runner writes a timestamped JSON report to `results/`. Each report includes:
+The runner writes a timestamped JSON report to `evals/results/`. Each report includes:
 
 - bare-model answers and judged verdicts
 - skill-loaded answers and judged verdicts
@@ -132,9 +133,9 @@ The runner writes a timestamped JSON report to `results/`. Each report includes:
 ### Files
 
 - `evals/*.yaml` — per-skill eval definitions
-- `runner/load-skill.sh` — bundles `SKILL.md` plus local references/assets into one prompt context
-- `runner/judge.md` — judge prompt used to grade answers against `expected_facts` and `fail_if`
-- `results/.gitkeep` — keeps the output directory in git while ignoring generated JSON reports
+- `evals/runner/load-skill.sh` — bundles `SKILL.md` plus local references/assets into one prompt context
+- `evals/runner/judge.md` — judge prompt used to grade answers against `expected_facts` and `fail_if`
+- `evals/results/.gitkeep` — keeps the output directory in git while ignoring generated JSON reports
 
 ## Related Docs
 

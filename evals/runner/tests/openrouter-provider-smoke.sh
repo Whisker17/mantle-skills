@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-REPO_ROOT=$(cd "$SCRIPT_DIR/../.." && pwd)
+REPO_ROOT=$(cd "$SCRIPT_DIR/../../.." && pwd)
 
 tmpdir=$(mktemp -d)
 trap 'rm -rf "$tmpdir"' EXIT
@@ -12,7 +12,7 @@ stdout_file="$tmpdir/stdout.txt"
 
 set +e
 env -u OPENROUTER_API_KEY -u OPENAI_API_KEY \
-  "$REPO_ROOT/runner/run.sh" \
+  "$REPO_ROOT/evals/runner/run.sh" \
   --skill network-primer \
   --model openrouter/openai/gpt-5.2 \
   >"$stdout_file" 2>"$stderr_file"

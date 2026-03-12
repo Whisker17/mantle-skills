@@ -2,9 +2,9 @@
 set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-REPO_ROOT=$(cd "$SCRIPT_DIR/.." && pwd)
+REPO_ROOT=$(cd "$SCRIPT_DIR/../.." && pwd)
 EVALS_DIR="$REPO_ROOT/evals"
-RESULTS_DIR="$REPO_ROOT/results"
+RESULTS_DIR="$REPO_ROOT/evals/results"
 JUDGE_PROMPT_FILE="$SCRIPT_DIR/judge.md"
 YAML_BACKEND=""
 
@@ -12,13 +12,13 @@ BARE_SYSTEM_PROMPT="You are a helpful AI assistant."
 
 usage() {
   cat <<'EOF'
-Usage: ./runner/run.sh --skill <slug-or-skill-name> --model <provider/model> [options]
+Usage: ./evals/runner/run.sh --skill <slug-or-skill-name> --model <provider/model> [options]
 
 Options:
   --skill <value>         Eval slug (for example: network-primer) or YAML skill name
   --model <value>         Target model in provider/model format (for example: openai/gpt-5.2 or openrouter/openai/gpt-5.2)
   --judge-model <value>   Judge model in provider/model format (defaults to --model)
-  --output <path>         Write JSON report to this path instead of results/<skill>-<timestamp>.json
+  --output <path>         Write JSON report to this path instead of evals/results/<skill>-<timestamp>.json
   --list-skills           List available eval slugs and exit
   --help                  Show this help text
 

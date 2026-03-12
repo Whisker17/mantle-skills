@@ -2,22 +2,22 @@
 set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-REPO_ROOT=$(cd "$SCRIPT_DIR/.." && pwd)
+REPO_ROOT=$(cd "$SCRIPT_DIR/../.." && pwd)
 DEFAULT_EVALS_DIR="$REPO_ROOT/evals"
-DEFAULT_RESULTS_DIR="$REPO_ROOT/results/batches"
+DEFAULT_RESULTS_DIR="$REPO_ROOT/evals/results/batches"
 DEFAULT_RUNNER="$SCRIPT_DIR/run.sh"
 
 usage() {
   cat <<'EOF'
-Usage: ./runner/run-all-skills.sh --model <provider/model> [options]
+Usage: ./evals/runner/run-all-skills.sh --model <provider/model> [options]
 
 Options:
   --model <value>        Required target model
   --judge-model <value>  Optional judge model; defaults to --model
   --label <value>        Optional output label; defaults to sanitized model name
   --evals-dir <path>     Optional eval directory; defaults to repo evals/
-  --results-dir <path>   Optional output root; defaults to results/batches/
-  --runner <path>        Optional single-skill runner; defaults to runner/run.sh
+  --results-dir <path>   Optional output root; defaults to evals/results/batches/
+  --runner <path>        Optional single-skill runner; defaults to evals/runner/run.sh
   --help                 Show this help text
 EOF
 }
